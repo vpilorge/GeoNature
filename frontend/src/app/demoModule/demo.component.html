@@ -1,0 +1,68 @@
+
+<div class="row row-0" style="height: 92vh;">
+
+    <div *ngIf="formGroup" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        
+      <pnx-nomenclature
+        label="Technique d'observation"
+        [parentFormControl]="formGroup.controls.nomenclature"
+        [idTypeNomenclature]="100">
+      </pnx-nomenclature>
+
+      <pnx-taxonomy
+        label="Taxon"
+        [parentFormControl]="formGroup.controls.cd_nom"
+        [idList]="500"
+        [charNumber]="3"
+        [listLength]="20"
+        (onChange)="fs.onTaxonChanged($event);">
+      </pnx-taxonomy>
+
+
+      <pnx-observers
+       label="Observateur"
+       [parentFormControl]="formGroup.controls.observer"
+       [idMenu]="9"
+       [disabled]="false"
+       debounceTime=600
+       >
+      </pnx-observers>
+
+      <pnx-datasets
+        label="JDD"
+        [parentFormControl]="formGroup.controls.jdd"
+        [disabled]="false">
+      </pnx-datasets>
+
+      <pnx-date
+       label="date"
+       [parentFormControl]="formGroup.controls.date"
+       (dateChanged)="dateChanged($event)" [disabled]="false">
+    </pnx-date>
+    </div>
+
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <!-- <pnx-map height="92vh">
+
+        </pnx-map> -->
+    </div>
+  
+</div>
+
+
+
+
+<!-- <pnx-geojson
+  [geojson]=""
+  [onEachFeature]="onEachFeature.bind(this)">
+</pnx-geojson> -->
+
+<!-- <pnx-marker (markerChanged)="myCallBack($event)"> </pnx-marker> -->
+
+<!-- <pnx-leaflet-draw [options]="leafletDrawOption" (layerDrawed)="sendGeoInfo($event)" > </pnx-leaflet-draw> -->
+
+<!-- <pnx-gps (markerChanged)="sendGeoInfo($event)"> </pnx-gps> -->
+
+
+
+
