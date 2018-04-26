@@ -1,0 +1,315 @@
+<div id="all">
+  <div class="row row-m">
+
+    <!-- Partie de gauche -->
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 padding-lg card"> Observations
+
+      <!-- Début Filtres Taxonomiques -->
+      <div class="card" id="specific-filter">
+        <div class="card bg-secondary" id="filter-title">
+          <div style="text-indent: 15px;"> Filtre TaxRef
+
+            <!-- Boutons -->
+            <div class="pull-right">
+              <i
+                id="settings"
+                class="fa fa-cog action clickable"
+                aria-hidden="true"
+                matTooltip="{{ 'Form.AdvancedFilters' | translate }}"
+                (click)="toggleAdvancedFilters()"
+              ></i>
+              <svg *ngIf="formsSelected.length > 0" height="40" width="10">
+                  <circle cx="5" cy="30" r="3" stroke="red" stroke-width="0" fill="red" />
+              </svg>             
+              <i
+              class="fa fa-trash-o clickable action"
+              aria-hidden="true"
+              matTooltip="{{ 'Form.RefreshFilters' | translate }}"
+              (click)="refreshFilters()">
+              </i>
+            </div>
+          </div>  
+        </div>
+
+        <!-- Filtres -->
+        <div *ngIf="advandedFilterOpen">
+          <div class='form-inline'>   
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 padding-lg">Cd_nom</div>
+
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 padding-lg">Cd_Ref</div>
+
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 padding-lg">Groupes</div>
+          </div>
+
+          <div class='form-inline'>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 padding-lg">Regne</div>
+            <!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 padding-lg">
+              <small>Règne</small>
+              <select [formControl]="regneControl" class="form-control">
+                <option *ngFor="let regne of regnes" [ngValue]="regne">{{regne.label}}</option>
+              </select>
+            </div> -->
+            
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 padding-lg">Phylum</div>
+
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 padding-lg">Famille</div>
+          </div>
+
+          <div class='form-inline'>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 padding-lg">Classe</div>
+
+            <!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 padding-lg">Taxon</div> -->
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 padding-lg">
+              <pnx-taxonomy
+                label="{{ 'Taxon.Taxon' | translate }}"
+                [parentFormControl]="dynamicFormGroup.controls.cd_nom"
+                [idList]="validationConfig.id_taxon_list"
+                [charNumber]="3"
+                [listLength]="20">
+              </pnx-taxonomy>
+            </div>
+
+            <!-- Autres renseignements -->
+            <div *ngIf="advandedFilterOpen" id="collapse-settings" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 padding-lg">
+              <small class="label-sm"> Autres Critères </small>
+              <select class="form-control filter-control" [formControl]="filterControl">
+                <option [ngValue]="null" > -- </option>
+                <option *ngFor="let formDef of formsDefinition" [ngValue]="formDef">
+                  {{formDef.label}}
+                </option>
+              </select>
+              <div class='form-inline' [formGroup]="dynamicFormGroup">
+                <div class="dynamic-form padding-sm" *ngFor="let formDef of formsSelected; let i = index" >
+                  <pnx-dynamic-form
+                  [formDef]="formDef"
+                  [form]="dynamicFormGroup"
+                  >
+                  </pnx-dynamic-form>
+                  <i class="fa fa-trash-o clickable trash-btn" (click)="removeFormControl(i)" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
+            
+
+          </div>
+        </div>
+        <!-- Fin Filtres Taxonomiques -->
+      </div>
+
+
+      <!-- Début Autres Filtres -->
+      <div class="card" id="other-filter">
+        <div class="card bg-secondary" id="filter-title">
+          <div class="row-md" style="text-indent: 15px;"> Autres filtres
+
+            <!-- Boutons -->
+            <div class="pull-right">
+              <i
+                id="settings"
+                class="fa fa-cog action clickable"
+                aria-hidden="true"
+                matTooltip="{{ 'Form.AdvancedFilters' | translate }}"
+                (click)="toggleAdvancedFilters()"
+              ></i>
+              <svg *ngIf="formsSelected.length > 0" height="40" width="10">
+                  <circle cx="5" cy="30" r="3" stroke="red" stroke-width="0" fill="red" />
+              </svg>             
+              <i
+              class="fa fa-trash-o clickable action"
+              aria-hidden="true"
+              matTooltip="{{ 'Form.RefreshFilters' | translate }}"
+              (click)="refreshFilters()">
+              </i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filtres -->
+        <div *ngIf="advandedFilterOpen">
+            <div class='form-inline'>   
+
+              <!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 padding-lg">Observateurs</div> -->
+              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 padding-lg">
+                <pnx-observers
+                  [parentFormControl]="dynamicFormGroup.controls.observer"
+                  [idMenu]="9"
+                  label="{{ 'Releve.Observers' | translate }}">
+                </pnx-observers>
+              </div>
+
+              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 padding-lg">Commune</div>
+
+              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 padding-lg">Validation
+              </div>
+            </div>
+
+            <div class='form-inline'>
+              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 padding-lg">Altitude min</div>
+              <!-- <div *ngIf="validationConfig.form_fields.releve.altitude_min" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 padding-lg">
+                Altitude min
+                <input class="form-control" type="number" 
+                  [formControl]="releveForm.controls.properties.controls.altitude_min"
+                  [disableControl]="fs.disabled"
+                  style="width:190px;">
+              </div> -->
+              
+              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 padding-lg">Altitude max</div>
+              <!-- <div *ngIf="validationConfig.form_fields.releve.altitude_max" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 padding-lg">
+                Altitude max
+                <input class="form-control" type="number" 
+                  [formControl]="releveForm.controls.properties.controls.altitude_max"
+                  [disableControl]="fs.disabled"
+                  style="width:190px;">
+              </div> -->
+            </div>
+
+            <div class='form-inline'>
+              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 padding-lg">
+                <pnx-date
+                  label="{{ 'Releve.MinDate' | translate }} "
+                  [parentFormControl]="dynamicFormGroup.controls.date_low">
+                </pnx-date>
+              </div>
+
+              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 padding-lg">
+                <pnx-date
+                  label="{{ 'Releve.MaxDate' | translate }} "
+                  [parentFormControl]="dynamicFormGroup.controls.date_up">
+               </pnx-date>
+              </div>
+            </div>
+        </div>
+      </div>
+      <!-- Fin Autres Filtres -->
+    
+
+      <!-- Lancer la recherche -->
+      
+      <div id="research">Lancer la recherche :
+        <i
+        (click)="searchData()"
+        id="settings"
+        class="fa fa-search action clickable"
+        aria-hidden="true"
+        matTooltip="{{ 'Search' | translate }}"
+        ></i>
+      </div>
+
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-sm">
+        <!-- LIST -->
+        <!--Table-->
+        <ngx-datatable
+          #table
+          class="material striped margin-top-xs table-size expandable"
+          [rows]="mapListService.tableData"
+          [columns]="mapListService.displayColumns"
+          [columnMode]="'force'"
+          [headerHeight]="50"
+          [footerHeight]="35"
+          [rowHeight]="50"
+          [draggable]="false"
+          [selected]="mapListService.selectedRow"
+          [externalPaging]="true"
+          [scrollbarH]="false"
+          [selectionType]="'single'"
+          [count]="mapListService.page.totalElements"
+          [offset]="mapListService.page.pageNumber"
+          [limit]="mapListService.page.size"
+          [rowClass]="mapListService.getRowClass"
+          (page)="mapListService.setTablePage($event, apiEndPoint)"
+          (select)="mapListService.onRowSelect($event)"
+        >
+
+          <!-- ACTION COLUMNS -->
+          <ngx-datatable-column maxWidth="10">
+              <ng-template ngx-datatable-header-template>
+                  <i
+                  (click)="openModalCol($event, modalCol)"
+                  class="fa fa-cog clickable"
+                  aria-hidden="true"
+                  matTooltip="{{'List.Columns' | translate}}"
+                  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                  ></i>
+              </ng-template>
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <button class="btn btn-secondary btn-no-padding btn-ghost" [disabled]="!row.rights.U" (click)="onEditReleve(row[mapListService.idName])">
+                  <i [ngClass]="{'disabled' : !row.rights.U}" matTooltip="{{'Releve.Edit' | translate}} {{row[mapListService.idName]}}" class="fa fa-pencil-square-o" aria-hidden="true" ></i>
+              </button>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column maxWidth="10">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+            <button class="btn btn-secondary btn-no-padding btn-ghost" [disabled]="!row.rights.R" (click)="onDetailReleve(row[mapListService.idName])">
+                <i [ngClass]="{'disabled' : !row.rights.R}" matTooltip="{{ 'Releve.Info' | translate }} {{row[mapListService.idName]}}" class="fa fa-info-circle" aria-hidden="true" ></i>
+            </button>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column maxWidth="10">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <button class="btn btn-secondary btn-no-padding btn-ghost" [disabled]="!row.rights.D" (click)="openDeleteModal($event, modalConfirm, iElement, row)">
+                  <i [ngClass]="{'disabled' : !row.rights.D}" #iElement matTooltip="{{ 'Releve.Delete' | translate }} {{row[mapListService.idName]}}" class="fa fa-trash-o" aria-hidden="true"></i>
+              </button>
+            </ng-template>
+          </ngx-datatable-column>
+
+
+          <!-- DATA COLOMNS -->
+          <ngx-datatable-column
+            *ngFor="let col of mapListService.displayColumns"
+            [name]="col.name"
+            [prop]="col.prop">
+          </ngx-datatable-column>
+        </ngx-datatable>
+
+        <!-- MODAL COLUMNS -->
+        <ng-template #modalCol let-c="close" let-d="dismiss">
+          <div class="modal-header">
+            <h4> {{'List.DisplayColumns' | translate}} </h4>
+          </div>
+          <div class="modal-body">
+            <li class="col-list" *ngFor="let col of mapListService.availableColumns">
+              <a>
+                  <input
+                  type='checkbox'
+                  [id]="col.name"
+                  (click)='toggle(col)'
+                  [checked]='isChecked(col)'
+                />
+                <label [attr.for]="col.name">{{col.name | readablePropertie }}</label>
+              </a>
+            </li>
+          </div>
+        </ng-template>
+
+        <!-- MODAL DELETE -->
+        <ng-template #modalConfirm let-c="close" let-d="dismiss">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"> {{'Releve.Delete' | translate }} {{ mapListService.selectedRow[0][mapListService.idName]}} ?</h5>
+          </div>
+          <div class="modal-body">
+            <button type="button" class="btn btn-default" (click)="c()"> {{'Cancel' | translate}} </button>
+            <button type="button" class="btn btn-danger" (click)="c(); onDeleteReleve(mapListService.selectedRow[0].id_releve_contact)"> {{'Delete' | translate }} </button>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Ajout du bouton valider -->
+      
+      <input type="button" class="btn btn-success center" value="Valider" id="valider" (click)="onValidate()">
+
+    </div>
+
+    <!-- Partie de droite -->
+    <!-- Carto -->
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 padding-sm">
+      <pnx-map-list
+        [idName]="idName"
+        height="90vh">
+      </pnx-map-list>
+    </div>
+    <!-- Fin carto -->
+
+  </div>
+</div>
