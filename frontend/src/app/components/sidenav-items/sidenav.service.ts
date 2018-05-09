@@ -22,8 +22,9 @@ export class SideNavService {
       // {route: '/flore-station', moduleName: 'Flore Station', icon: 'local_florist', id: '15'},
       // {route: '/suivi-flore', moduleName: 'Suivi Flore', icon: 'filter_vintage', id: '16'},
       // {route: '/suivi-chiro', moduleName: 'Suivi Chiro', icon: 'youtube_searched_for', id: '17'},
-      { route: '/exports', moduleName: 'Exports', icon: 'cloud_download', id: '18' },
-      { route: '/validation', moduleName: 'validation', icon: 'visibility', id: '22' }
+      // { route: '/exports', moduleName: 'Exports', icon: 'cloud_download', id: '18' },
+      { route: '/export', moduleName: 'Interoperabilite', icon: 'cloud_download', id: '46' },
+      { route: '/validation', moduleName: 'Validation', icon: 'visibility', id: '22' }
       // {route: '/prospections', moduleName: 'Prospections', icon: 'feedback', id: '19'},
       // {route: '/parametres', moduleName: 'Paramètres', icon: 'settings', id: '20'}
     ];
