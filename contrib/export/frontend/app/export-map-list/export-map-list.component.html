@@ -1,0 +1,137 @@
+<div id="all" ng-app="myApp">
+    <div class="row row-m">
+        <div class="container card">
+            <div class="card" id="title">
+            <br>Exports disponibles     
+            </div>
+
+            <div class="btn-group btn-group-vertical" data-toggle="buttons" id="button-export">
+                <label class="btn btn-primary active">
+                        <input type="radio" name="options" autocomplete="off" checked>Export n°1
+                </label>
+                <label class="btn btn-primary">
+                        <input type="radio" name="options" autocomplete="off">Export n°2
+                </label>
+                <label class="btn btn-primary">
+                        <input type="radio" name="options" autocomplete="off">Export n°3
+                </label>
+                <label class="btn btn-primary">
+                        <input type="radio" name="options" autocomplete="off">Export n°4
+                </label>
+                <label class="btn btn-primary">
+                        <input type="radio" name="options" autocomplete="off">Export n°5
+                </label>
+                <label class="btn btn-primary">
+                        <input type="radio" name="options" autocomplete="off">Export n°6
+                </label>
+            </div>
+
+            <div id="checklicence">
+                <form class="ng-pristine ng-invalid ng-invalid-required" name="frm" method="post"
+                novalidate autocomplete="off">
+                <input id="licence" type="checkbox" name="checked" ng-model="checked">
+                <label for="licence">Acceptez la licence</label>
+                <button class="btn btn-success" type="submit" ng-disabled="checked"> Hello</button>
+
+                </form>
+            </div>
+            <div id="readlicence">
+            <button type="button" class="btn btn-outline-info btn-sm pull-right" data-toggle="modal" data-target="#licenceModal" data-backdrop="false">Lire la licence</button>
+
+            <!-- Modal Licence -->
+            <div class="modal fade" id="licenceModal" role="dialog">
+                <div class="modal-dialog">
+                
+                        <!-- Modal content-->
+                        <div class="modal-content">
+
+                        <div class="modal-body">
+
+                                <p>Je suis la licence ! Respecte moi ! </p>
+
+                                <p> Faire un lien vers un fichier contenant le texte.</p>
+
+                        </div>
+                        <div class="modal-footer">
+
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                        </div>
+                        </div>
+                
+                </div>
+            </div>
+
+        </div>
+
+        </div>
+    </div>
+
+    <div class="container card">
+
+        <div id="choice"> 
+                <button type="button" id="AccueilButton" class="btn btn-danger">Annuler</button>     
+                <button type="button" id="AccueilButton" class="btn btn-success" data-toggle="modal" data-target="#myModal" data-backdrop="false" ng-model="ddl" ng-required="licence"> Télécharger </button>
+        </div>
+
+        <!-- Modal Téléchargement -->
+        <div class="modal fade" id="myModal" role="dialog">
+          <div class="modal-dialog">
+          
+            <!-- Modal content-->
+            <div class="modal-content">
+
+              <div class="modal-body">
+                <p>Pour continuer le téléchargement:</p>
+                <ul> <li> Choisir un format </li> </ul>
+                <select class=form-control>
+                <option value=un>---</option>
+                <option value=deux>RDF</option>
+                <option value=trois>Json</option>
+                </select>
+                <br>
+                <ul> <li> Choisir un standard </li> </ul>
+                <select class=form-control>
+                <option value=un>---</option>
+                <option value=deux>Darwin Core</option>
+                <option value=trois>ABCD Schema</option>
+                <option value=quatre>EML</option>
+                </select>
+                <br><br>
+
+                <hr width="50%">
+                <input id="adresseMail" type="email" placeholder="Saisir une adresse mail" style="display:block; margin:auto;" required>
+                <hr width="50%">
+
+                <div id="choice">
+                        <button id="widthButton" type="button" class="btn btn-danger" matTooltip="{{ 'Form.RefreshFilters' | translate }}" (click)="refreshFilters()">Annuler</button>
+                        <button id="widthButton" type="button" class="btn btn-success">OK</button>
+                </div>
+
+                <br>
+
+                <div class="progress">
+                     <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                         <span class="sr-only">70% effectué (success)</span>
+                     </div>
+                </div> 
+
+              </div>
+              <div class="modal-footer">
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        
+
+      </div>
+
+
+
+
+
+
+
+</div>
