@@ -17,6 +17,11 @@ import { FormGroup, FormBuilder } from "@angular/forms";
 import { DynamicFormComponent } from "@geonature_common/form/dynamic-form/dynamic-form.component";
 import { DynamicFormService } from "@geonature_common/form/dynamic-form/dynamic-form.service";
 import { FILTERSLIST } from "./filters-list";
+import { Directive, Renderer2} from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: "pnx-export-map-list",
@@ -24,7 +29,9 @@ import { FILTERSLIST } from "./filters-list";
   styleUrls: ["./export-map-list.component.scss"],
   providers: [MapListService]
 })
+
 export class ExportMapListComponent implements OnInit {
+  public modalForm : FormGroup;
   public licence: string;
   public displayColumns: Array<any>;
   public availableColumns: Array<any>;
@@ -38,11 +45,23 @@ export class ExportMapListComponent implements OnInit {
   public dynamicFormGroup: FormGroup;
   public filterControl = new FormControl();
   public formsSelected = [];
+  public buttonDisabled: boolean = false;
+  public barHide: boolean = false;
   // provisoire
   public tableMessages = {
     emptyMessage: "Aucune observation à afficher",
     totalMessage: "observation(s) au total"
   };
+
+  public varExport1 = "Export n°1";
+  public varExport2 = "Export n°2";
+  public varExport3 = "Export n°3";
+  public varExport4 = "Export n°4";
+  public varExport5 = "Export n°5";
+  public varExport6 = "Export n°6";
+
+  public today = Date.now();
+  
   advandedFilterOpen = false;
   @ViewChild(NgbModal) public modalCol: NgbModal;
   @ViewChild(TaxonomyComponent) public taxonomyComponent: TaxonomyComponent;
@@ -57,69 +76,6 @@ export class ExportMapListComponent implements OnInit {
     private _fb: FormBuilder,
     private _dynformService: DynamicFormService
   ) {}
-
-  ngOnInit() {
-    this.dynamicFormGroup = this._fb.group({
-      cd_nom: null,
-      observer: null,
-      date_min: null,
-      date_max: null,
-      dataset: null,
-      observers_txt: null,
-      id_dataset: null,
-      date_up: null,
-      date_low: null,
-      export_status: null
-    });
-
-    this.filterControl.valueChanges
-      .filter(value => value !== null)
-      .subscribe(formDef => {
-        this.addFormControl(formDef);
-      });
-
-    this.exportConfig = ExportConfig;
-
-    // parameters for maplist
-    // columns to be default displayed
-    this.displayColumns = ExportConfig.default_maplist_columns;
-    this.mapListService.displayColumns = this.displayColumns;
-
-    // columns available for display
-    this.availableColumns = [
-      { prop: "altitude_max", name: "altitude_max" },
-      { prop: "altitude_min", name: "altitude_min" },
-      { prop: "comment", name: "Commentaire" },
-      { prop: "date_max", name: "Date fin" },
-      { prop: "date_min", name: "Date début" },
-      { prop: "id_dataset", name: "ID dataset" },
-      { prop: "id_digitiser", name: "ID rédacteur" },
-      { prop: "id_releve_contact", name: "ID relevé" },
-      { prop: "observateurs", name: "observateurs" },
-      { prop: "taxons", name: "taxons" }
-    ];
-    this.mapListService.availableColumns = this.availableColumns;
-    // column available to filter
-    this.filterableColumns = [
-      { prop: "altitude_max", name: "altitude_max" },
-      { prop: "altitude_min", name: "altitude_min" },
-      { prop: "comment", name: "Commentaire" },
-      { prop: "id_dataset", name: "ID dataset" },
-      { prop: "id_digitiser", name: "Id rédacteur" },
-      { prop: "id_releve_contact", name: "Id relevé" }
-    ];
-    this.mapListService.filterableColumns = this.filterableColumns;
-    this.idName = "id_releve_contact";
-    this.apiEndPoint = "export/vreleve";
-
-    // FETCH THE DATA
-    this.mapListService.getData(
-      "export/vreleve",
-      [{ param: "limit", value: 12 }],
-      this.customColumns
-    );
-    // end OnInit
-  }
 
   addFormControl(formDef) {
     this.formsSelected.push(formDef);
@@ -138,133 +94,21 @@ export class ExportMapListComponent implements OnInit {
     this.filterControl.setValue(null);
   }
 
-  toggleAdvancedFilters() {
-    this.advandedFilterOpen = !this.advandedFilterOpen;
-  }
-  
- closeAdvandedFilters() {
-    this.advandedFilterOpen = false;
-  }
-
-  searchData() {
-    this.mapListService.refreshUrlQuery(12);
-    const params = [];
-    for (let key in this.dynamicFormGroup.value) {
-      console.log(key);
-      console.log(this.dynamicFormGroup.value[key]);
-
-      let value = this.dynamicFormGroup.value[key];
-      if (key === "cd_nom" && this.dynamicFormGroup.value[key]) {
-        value = this.dynamicFormGroup.value[key].cd_nom;
-      }
-      if (value && value !== "") {
-        params.push({ param: key, value: value });
-      }
-    }
-    this.closeAdvandedFilters();
-    this.mapListService.refreshData(this.apiEndPoint, "set", params);
-  }
-
-  onEditReleve(id_releve) {
-    this._router.navigate(["export/form", id_releve]);
-  }
-
-  onDetailReleve(id_releve) {
-    this._router.navigate(["export/info", id_releve]);
-  }
-
-  onDeleteReleve(id) {
-    this._exportService.deleteReleve(id).subscribe(
-      data => {
-        this.deleteObsFront(id);
-        this._commonService.translateToaster(
-          "success",
-          "Releve.DeleteSuccessfully"
-        );
-      },
-      error => {
-        if (error.status === 403) {
-          this._commonService.translateToaster("error", "NotAllowed");
-        } else {
-          this._commonService.translateToaster("error", "ErrorMessage");
-        }
-      }
-    );
-  }
-
-  deleteObsFront(idDelete) {
-    this.mapListService.tableData = this.mapListService.tableData.filter(
-      row => {
-        return row[this.idName] !== idDelete;
-      }
-    );
-
-    this.mapListService.geojsonData.features = this.mapListService.geojsonData.features.filter(
-      row => {
-        return row.properties[this.idName] !== idDelete;
-      }
-    );
-  }
-
-  openDeleteModal(event, modal, iElement, row) {
-    this.mapListService.selectedRow = [];
-    this.mapListService.selectedRow.push(row);
-    event.stopPropagation();
-    // prevent erreur link to the component
-    iElement &&
-      iElement.parentElement &&
-      iElement.parentElement.parentElement &&
-      iElement.parentElement.parentElement.blur();
-    this.ngbModal.open(modal);
-  }
-
-  onValidate() {
-    this._router.navigate(["export/form"]);
-  }
-
-  customColumns(feature) {
-    // function pass to the getData and the maplist service to format date
-    // on the table
-    // must return a feature
-    const date_min = new Date(feature.properties.date_min);
-    const date_max = new Date(feature.properties.date_max);
-    feature.properties.date_min = date_min.toLocaleDateString("fr-FR");
-    feature.properties.date_max = date_max.toLocaleDateString("fr-FR");
-    return feature;
-  }
-  refreshFilters() {
-    this.taxonomyComponent.refreshAllInput();
-    this.dynamicFormGroup.reset();
-    this.mapListService.refreshUrlQuery(12);
-  }
-
-  toggle(col) {
-    const isChecked = this.isChecked(col);
-    if (isChecked) {
-      this.mapListService.displayColumns = this.mapListService.displayColumns.filter(
-        c => {
-          return c.prop !== col.prop;
-        }
-      );
-    } else {
-      this.mapListService.displayColumns = [
-        ...this.mapListService.displayColumns,
-        col
-      ];
-    }
-  }
-
   openModalCol(event, modal) {
     this.ngbModal.open(modal);
   }
 
-  onChangeFilterOps(col) {
-    this.mapListService.urlQuery.delete(this.mapListService.colSelected.prop);
-    this.mapListService.colSelected = col;
+  follow(){
+    this.buttonDisabled = !this.buttonDisabled;
   }
 
+  showme(){
+    this.barHide = !this.barHide;
+  }
 
-
+  resetModal(){
+    this.modalForm.reset(); 
+  }
 }
 
 
