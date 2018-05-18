@@ -96,13 +96,11 @@ export class ExportMapListComponent implements OnInit {
     this.modalForm.reset(); 
   }
 
-  
-  
-  ngOnInit(): void {
-    this.modalForm = new FormGroup({
-      adresseMail: new FormControl()
-   });
-}
+//   ngOnInit(): void {
+//     this.modalForm = new FormGroup({
+//       adresseMail: new FormControl()
+//    });
+// }
 
 get adresseMail() { return this.modalForm.get('adresseMail'); }
 

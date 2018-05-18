@@ -113,15 +113,11 @@
                                 <div id="mailText">Saisir une adresse mail valide:</div>
                                 <br>
 
-                                <input id="adresseMail" formControlName="adresseMail" type="email" placeholder="---" style="display:block; margin:auto;" autocomplete="off" required>
+                                <input class="form-control" id="adresseMail" formControlName="adresseMail" type="email" placeholder="---" style="display:block; margin:auto;" autocomplete="off" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
                                 <br><br>
-
-                                <!-- <p class="error_message" *ngIf="modalForm.get('adresseMail').invalid && (modalForm.submitted || modalForm.get('adresseMail').dirty)">Please provide email</p> -->
-                                <div *ngIf="(adresseMail.invalid && (adresseMail.dirty || adresseMail.touched)) || adresseMail.errors.required" class="alert alert-danger">
-                                                Adresse mail non valide
-                                </div>
-
-                               
+                                
+                                <div class="alert alert-danger" [hidden]="!adresseMail.hasError('required')">Adresse mail obligatoire</div>
+                                <div class="alert alert-danger" [hidden]="!adresseMail.hasError('pattern')">Format non valide</div>
                                         
                                 <!-- Affichage d'une barre de progression lors du téléchargement du fichier -->
                                 <div class="progress" *ngIf="barHide">
