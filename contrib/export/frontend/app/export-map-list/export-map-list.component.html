@@ -1,10 +1,17 @@
 <div id="all">
     <div class="row row-m">
         <div class="container card">
-            <div class="card" id="title">
-            <br>Exports disponibles     
+            <div id="title">
+            <h2>EXPORTS</h2>
+            <hr width="50%">    
             </div>
-
+            <div id="textPresentation">
+                <p>Voici la liste des exports disponibles. Ces exports ont été programmés par l'administration Géonature.</p>
+            </div>
+            <div id="textPresentation">
+                <p>Pour modifier cette liste ou avoir un export supplémentaire, veuillez contacter le service admin.</p>
+            </div>
+                <!-- Liste des exports disponibles au téléchargement -->
             <div class="btn-group btn-group-vertical" data-toggle="buttons" id="button-export">
                 <label class="btn btn-primary active">
                         <input type="radio" name="options">{{ varExport1 }} - {{ today | date: 'dd/MM/yyyy'}}
@@ -26,34 +33,40 @@
                 </label>
             </div>
 
-            <div id="checklicence">
+            <div id="checkLicence">
                 
                 <label for="licence">Acceptez la licence</label>
-                <input type="checkbox" class="form-control" id="licence" (click)="follow()" formControlName="licence" ngModel required/>
+                <input type="checkbox" class="form-control" id="licence" (click)="follow()" ngModel required/>
+
+                <!-- Message d'erreur si la licence n'est pas checké -->
+
                 <!-- <div *ngIf="licence.invalid && (licence.dirty || licence.touched)" class="alert alert-danger">
                         <div *ngIf="licence.errors.required">Must check the licence.</div>
                 </div> -->
+                <!-- <span ng-show="myModal.licence.touched || myModal.licence.invalid">The name is required.</span> -->
+
             </div>
 
             <div id="readlicence">
             <button type="button" class="btn btn-outline-info btn-sm pull-right" data-toggle="modal" data-target="#licenceModal" data-backdrop="false">Lire la licence</button>
 
-            <!-- Modal Licence -->
+            <!-- Affichage du Modal Licence -->
             <div class="modal fade" id="licenceModal" role="dialog">
                 <div class="modal-dialog">
                         <!-- Modal content-->
                         <div class="modal-content">
-                        <div class="modal-body">
-                                <div style="text-align: center;">
-                                        <object data="./licence.pdf" width="100%" height="100%" type='application/pdf'>
-                                        <p>Le pdf ne s'affiche pas ... </p>
-                                        <a href="./licence.pdf" target="_blank">Si le pdf ne s'affiche pas, cliquez ici</a>
-                                        </object>
+                                <div class="modal-body">
+
+                                        <!-- Fonction pour afficher le pdf contenant le texte de la licence -->
+                                        <div class="pdf" style="text-align: center;">
+                                                <object data="./licence.pdf" width="100%" height="100%" type='application/pdf'>
+                                                </object>
+                                                <a href="./licence.pdf" download></a>
+                                        </div>
                                 </div>
-                        </div>
-                        <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-                        </div>
+                                <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                                </div>
                         </div>
                 </div>
             </div>
@@ -68,25 +81,26 @@
                 <button [disabled]="!buttonDisabled" type="submit" id="AccueilButton" class="btn btn-success" data-toggle="modal" data-target="#myModal" data-backdrop="false" ng-model="ddl" ng-required="licence"> Télécharger </button>
         </div>
 
-        <!-- Modal Téléchargement -->
+        <!-- Modal Téléchargement Popup-->
         <div class="modal fade" id="myModal" role="dialog">
           <div class="modal-dialog">
           
             <!-- Modal content-->
-            <form class="modal-content">
+            <form [formGroup]="modalForm" class="modal-content">
 
                         <div class="modal-body">
-                        
+                                <!-- Formulaire pour le choix des standards et des formats de téléchargement des fichiers -->
                                 <p>Pour continuer le téléchargement:</p>
                                 <ul> <li> Choisir un format </li> </ul>
-                                <select class=form-control>
+                                <select class=form-control autocomplete="off">
                                         <option value=zero>---</option>
                                         <option value=un>RDF</option>
                                         <option value=deux>Json</option>
+                                        <option value=trois>CSV</option>
                                 </select>
                                 <br>
                                 <ul> <li> Choisir un standard </li> </ul>
-                                <select class=form-control>
+                                <select class=form-control autocomplete="off">
                                         <option value=zero>---</option>
                                         <option value=un>Darwin Core</option>
                                         <option value=deux>ABCD Schema</option>
@@ -94,13 +108,22 @@
                                 </select>
                                 <br>
 
+                                <!-- Demande une adresse mail, nécessaire pour envoyer un mail à l'utilisateur pour signifier que l'envoi c'est bien passé. -->
                                 <hr width="50%">
                                 <div id="mailText">Saisir une adresse mail valide:</div>
                                 <br>
 
-                                <input id="adresseMail" type="email" placeholder="---" style="display:block; margin:auto;" email="true">
+                                <input id="adresseMail" formControlName="adresseMail" type="email" placeholder="---" style="display:block; margin:auto;" autocomplete="off" required>
                                 <br><br>
-                                
+
+                                <!-- <p class="error_message" *ngIf="modalForm.get('adresseMail').invalid && (modalForm.submitted || modalForm.get('adresseMail').dirty)">Please provide email</p> -->
+                                <div *ngIf="(adresseMail.invalid && (adresseMail.dirty || adresseMail.touched)) || adresseMail.errors.required" class="alert alert-danger">
+                                                Adresse mail non valide
+                                </div>
+
+                               
+                                        
+                                <!-- Affichage d'une barre de progression lors du téléchargement du fichier -->
                                 <div class="progress" *ngIf="barHide">
                                         <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
                                                 <span class="sr-only">70% effectué (success)</span>

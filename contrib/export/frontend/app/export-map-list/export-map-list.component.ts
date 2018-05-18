@@ -13,12 +13,11 @@ import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { ExportConfig } from "../export.config";
 import { TaxonomyComponent } from "@geonature_common/form/taxonomy/taxonomy.component";
 import { DatatableComponent } from "@swimlane/ngx-datatable";
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { FormGroup, FormBuilder, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { DynamicFormComponent } from "@geonature_common/form/dynamic-form/dynamic-form.component";
 import { DynamicFormService } from "@geonature_common/form/dynamic-form/dynamic-form.service";
 import { FILTERSLIST } from "./filters-list";
 import { Directive, Renderer2} from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { Pipe, PipeTransform } from '@angular/core';
 import { DatePipe } from '@angular/common';
@@ -32,7 +31,6 @@ import { DatePipe } from '@angular/common';
 
 export class ExportMapListComponent implements OnInit {
   public modalForm : FormGroup;
-  public licence: string;
   public displayColumns: Array<any>;
   public availableColumns: Array<any>;
   public pathEdit: string;
@@ -74,24 +72,12 @@ export class ExportMapListComponent implements OnInit {
     private _router: Router,
     public ngbModal: NgbModal,
     private _fb: FormBuilder,
-    private _dynformService: DynamicFormService
-  ) {}
+    private _dynformService: DynamicFormService ){
 
-  addFormControl(formDef) {
-    this.formsSelected.push(formDef);
-    this.formsDefinition = this.formsDefinition.filter(form => {
-      return form.key != formDef.key;
-    });
-    this._dynformService.addNewControl(formDef, this.dynamicFormGroup);
-    console.log(this.dynamicFormGroup);
-  }
+    this.modalForm = this._fb.group({
+      adresseMail:['', Validators.compose([Validators.required, Validators.email])]
+    })
 
-  removeFormControl(i) {
-    const formDef = this.formsSelected[i];
-    this.formsSelected.splice(i, 1);
-    this.formsDefinition.push(formDef);
-    this.dynamicFormGroup.removeControl(formDef.key);
-    this.filterControl.setValue(null);
   }
 
   openModalCol(event, modal) {
@@ -109,9 +95,17 @@ export class ExportMapListComponent implements OnInit {
   resetModal(){
     this.modalForm.reset(); 
   }
+
+  
+  
+  ngOnInit(): void {
+    this.modalForm = new FormGroup({
+      adresseMail: new FormControl()
+   });
 }
 
+get adresseMail() { return this.modalForm.get('adresseMail'); }
 
-
+}
 
 

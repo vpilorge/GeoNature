@@ -44,7 +44,6 @@ i.action {
 }
 
 #title {
-  background-color: rgba(233, 233, 233, 0.500) !important;
   line-height: 35px;
   margin-left:5px;
   margin-top: 15px;
@@ -133,7 +132,7 @@ ngx-datatable {
 
 #button-export {
   left:5px;
-  margin-top: 5px;
+  margin-top: 15px;
   margin-bottom: 5px;
   align-self: center;
   width: 600px;
@@ -152,7 +151,7 @@ ngx-datatable {
   align-self: right;
 }
 
-#checklicence{
+#checkLicence{
   margin-left:50px;
   margin-top: 25px;
   margin-bottom: 5px;
@@ -215,5 +214,15 @@ margin-left: 27%;
   margin-left:30%;
   margin-top: 25px;
   margin-bottom: 5px;
+}
+
+#pdf {
+  align-content: center;
+}
+
+#textPresentation {
+  margin-bottom: 5px;
+  align-self: center;
+  align-content: center;
 }
 
