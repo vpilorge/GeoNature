@@ -3,7 +3,7 @@
         <div class="container card">
             <div id="title">
             <h2>EXPORTS</h2>
-            <hr width="50%">    
+            <hr align="left" width="75%">    
             </div>
             <div id="textPresentation">
                 <p>Voici la liste des exports disponibles. Ces exports ont été programmés par l'administration Géonature.</p>
@@ -38,48 +38,28 @@
                 <label for="licence">Acceptez la licence</label>
                 <input type="checkbox" class="form-control" id="licence" (click)="follow()" ngModel required/>
 
-                <!-- Message d'erreur si la licence n'est pas checké -->
-
-                <!-- <div *ngIf="licence.invalid && (licence.dirty || licence.touched)" class="alert alert-danger">
-                        <div *ngIf="licence.errors.required">Must check the licence.</div>
-                </div> -->
-                <!-- <span ng-show="myModal.licence.touched || myModal.licence.invalid">The name is required.</span> -->
-
             </div>
 
-            <div id="readlicence">
-            <button type="button" class="btn btn-outline-info btn-sm pull-right" data-toggle="modal" data-target="#licenceModal" data-backdrop="false">Lire la licence</button>
-
-            <!-- Affichage du Modal Licence -->
-            <div class="modal fade" id="licenceModal" role="dialog">
-                <div class="modal-dialog">
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                                <div class="modal-body">
-
-                                        <!-- Fonction pour afficher le pdf contenant le texte de la licence -->
-                                        <div class="pdf" style="text-align: center;">
-                                                <object data="./licence.pdf" width="100%" height="100%" type='application/pdf'>
-                                                </object>
-                                                <a href="./licence.pdf" download></a>
-                                        </div>
-                                </div>
-                                <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-                                </div>
-                        </div>
-                </div>
+            <div id="readlicence">  
+            <a href="./licence.pdf" download>
+            <input type="button" class="btn btn-outline-secondary btn-sm pull-right" value="Télécharger la licence">
+            </a>
             </div>
-        </div>
-        </div>
-    </div>
 
-    <div class="container card">
+        
+    
 
-        <div id="choice"> 
-                <button type="submit" id="AccueilButton" class="btn btn-danger">Annuler</button>     
+    <!-- <div class="container card"> -->
+        
+        <hr align="right" width="75%">
+
+        <div id="choice">    
+                <button type="submit" id="AccueilButton" class="btn btn-danger">Annuler</button>  
                 <button [disabled]="!buttonDisabled" type="submit" id="AccueilButton" class="btn btn-success" data-toggle="modal" data-target="#myModal" data-backdrop="false" ng-model="ddl" ng-required="licence"> Télécharger </button>
         </div>
+        
+        </div>
+    </div>
 
         <!-- Modal Téléchargement Popup-->
         <div class="modal fade" id="myModal" role="dialog">
@@ -87,10 +67,14 @@
           
             <!-- Modal content-->
             <form [formGroup]="modalForm" class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Configuration de l'export</h4>
+                        </div>
 
                         <div class="modal-body">
                                 <!-- Formulaire pour le choix des standards et des formats de téléchargement des fichiers -->
-                                <p>Pour continuer le téléchargement:</p>
+                                <br>
+                                <!-- <p>Pour continuer le téléchargement:</p> --> 
                                 <ul> <li> Choisir un format </li> </ul>
                                 <select class=form-control autocomplete="off">
                                         <option value=zero>---</option>
@@ -115,7 +99,7 @@
 
                                 <input class="form-control" id="adresseMail" formControlName="adresseMail" type="email" placeholder="---" style="display:block; margin:auto;" autocomplete="off" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
                                 <br><br>
-                                
+
                                 <div class="alert alert-danger" [hidden]="!adresseMail.hasError('required')">Adresse mail obligatoire</div>
                                 <div class="alert alert-danger" [hidden]="!adresseMail.hasError('pattern')">Format non valide</div>
                                         
@@ -130,13 +114,13 @@
                         </div>
 
                         <div class="modal-footer" id="choicePopup">
-                                <button id="widthButton" type="submit" class="btn btn-success" (click)="showme()">OK</button>
                                 <button type="submit" class="btn btn-danger" data-dismiss="modal" (click)="resetModal()" >Fermer</button>
+                                <button id="widthButton" type="submit" class="btn btn-success" (click)="showme()">OK</button>    
                         </div>
              </form>
             
           </div>
         </div>
 
-      </div>
+      <!-- </div> -->
 </div>

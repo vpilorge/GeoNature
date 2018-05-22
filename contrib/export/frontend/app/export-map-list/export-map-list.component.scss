@@ -48,7 +48,7 @@ i.action {
   margin-left:5px;
   margin-top: 15px;
   margin-bottom: 20px;
-  text-align: center;
+  text-align: left;
 }
 
 #other-filter {
@@ -132,7 +132,7 @@ ngx-datatable {
 
 #button-export {
   left:5px;
-  margin-top: 15px;
+  margin-top: 20px;
   margin-bottom: 5px;
   align-self: center;
   width: 600px;
@@ -140,9 +140,9 @@ ngx-datatable {
 
 #choice {
   margin-left:5px;
-  margin-top: 25px;
+  margin-top: 10px;
   margin-bottom: 5px;
-  align-self: center;
+  align-self: right;
 }
 
 #export_tuned{
@@ -159,7 +159,7 @@ ngx-datatable {
 }
 
 #readlicence{
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 #part{
@@ -216,13 +216,9 @@ margin-left: 27%;
   margin-bottom: 5px;
 }
 
-#pdf {
-  align-content: center;
-}
-
 #textPresentation {
   margin-bottom: 5px;
-  align-self: center;
+  align-self: left;
   align-content: center;
 }
 
