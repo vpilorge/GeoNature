@@ -92,6 +92,7 @@ ngx-datatable {
 }
 
 .modal-body {
+  overflow: auto;
   text-align: center;
 }
 
@@ -174,6 +175,7 @@ ngx-datatable {
   max-width: 100%;
   max-height: 100%;
   overflow: auto;
+  overflow-y: scroll;
 }
 
 #widthButton{
@@ -188,15 +190,6 @@ ngx-datatable {
   align-content: center;
   margin-top: 25px;
   margin-bottom: 25px;
-}
-
-#licenceModal{
-  background: rgba(0, 0, 0, 0.527);
-  z-index: 1020;
-  min-height:1000000px;
-  max-width: 100%;
-  max-height: 100%;
-  overflow: auto;
 }
 
 #adresseMail{
