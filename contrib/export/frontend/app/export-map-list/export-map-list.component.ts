@@ -97,15 +97,17 @@ export class ExportMapListComponent implements OnInit {
     this.modalForm.reset(); 
   }
 
-//   ngOnInit(): void {
-//     this.modalForm = new FormGroup({
-//       adresseMail: new FormControl()
-//    });
-// }
+
 
 get adresseMail() { return this.modalForm.get('adresseMail'); }
 
 }
 
-// @app.route('/', methods=['GET','POST'])
-// def RTCDtmfSender():
+//  @app.route('/export', methods=['GET','POST'])
+//  def RTCDtmfSender():
+
+//   ngOnInit(){
+//     this.ExportService.getData(
+    
+//     )
+// }
