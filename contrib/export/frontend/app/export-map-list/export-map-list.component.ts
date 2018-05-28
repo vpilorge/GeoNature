@@ -46,11 +46,6 @@ export class ExportMapListComponent implements OnInit {
   public formsSelected = [];
   public buttonDisabled: boolean = false;
   public barHide: boolean = false;
-  // provisoire
-  public tableMessages = {
-    emptyMessage: "Aucune observation à afficher",
-    totalMessage: "observation(s) au total"
-  };
 
   public varExport1 = "Export n°1";
   public varExport2 = "Export n°2";
@@ -85,29 +80,22 @@ export class ExportMapListComponent implements OnInit {
     this.ngbModal.open(modal);
   }
 
+  //Fonction qui bloque le boutton de validation tant que la licence n'est pas checkée
   follow(){
     this.buttonDisabled = !this.buttonDisabled;
   }
 
+  //Fonction qui affiche la barre de téléchargement après validation
   showme(){
     this.barHide = !this.barHide;
   }
 
+  //Fonction pour avoir un modal vierge si l'on ferme puis réouvre le modal
   resetModal(){
     this.modalForm.reset(); 
   }
 
-
-
-get adresseMail() { return this.modalForm.get('adresseMail'); }
+  //Fonction pour envoyer un mail à l'utilisateur lorsque le ddl est terminé.
+  get adresseMail() { return this.modalForm.get('adresseMail'); }
 
 }
-
-//  @app.route('/export', methods=['GET','POST'])
-//  def RTCDtmfSender():
-
-//   ngOnInit(){
-//     this.ExportService.getData(
-    
-//     )
-// }

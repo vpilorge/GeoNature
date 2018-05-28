@@ -38,25 +38,12 @@ i.action {
   max-width: 15%;
 }
 
-.trash-btn {
-  margin-top: 30px;
-  margin-left: 5px;
-}
-
 #title {
   line-height: 35px;
   margin-left:5px;
   margin-top: 15px;
   margin-bottom: 20px;
   text-align: left;
-}
-
-#other-filter {
-  background-color: rgba(233, 233, 233, 0.500) !important;
-  line-height: 35px;
-  left:5px;
-  margin-top: 5px;
-  padding-bottom: 5px;
 }
 
 .col-list{
@@ -115,21 +102,8 @@ ngx-datatable {
   cursor: not-allowed!important;
 }
 
-#research {
-  align-self: center;
-  height:50px;
-  text-align:center;
-  vertical-align:middle;
-  padding-bottom: 50px;
-}
-
 .all {
   min-height: 100vh;
-}
-
-#filter-title {
-  background-color: rgba(212, 212, 212, 0.507) !important;
-  line-height: 35px;
 }
 
 #button-export {
@@ -144,7 +118,7 @@ ngx-datatable {
   margin-left:5px;
   margin-top: 10px;
   margin-bottom: 5px;
-  align-self: right;
+  align-self: flex-end;
 }
 
 #export_tuned{
@@ -215,6 +189,12 @@ margin-left: 27%;
   margin-bottom: 5px;
   align-self: left;
   align-content: center;
+}
+
+#telechargement{
+  margin-bottom: 15px;
+  align-content: center;
+  align-self: center;
 }
 
 .ng-valid[required], .ng-valid.required  {
