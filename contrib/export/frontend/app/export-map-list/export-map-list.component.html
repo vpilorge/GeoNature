@@ -111,7 +111,7 @@
 
                         <div class="modal-footer" id="choicePopup">
                                 <button type="submit" class="btn btn-danger" data-dismiss="modal" (click)="resetModal()" >Fermer</button>
-                                <button id="widthButton" type="submit" class="btn btn-success" (click)="showme()">OK</button>    
+                                <button [disabled]="!modalForm.valid" id="widthButton" type="submit" class="btn btn-success" (click)="showme()">OK</button>    
                         </div>
              </form>
             
