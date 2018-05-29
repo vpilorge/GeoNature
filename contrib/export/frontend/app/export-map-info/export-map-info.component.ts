@@ -30,6 +30,7 @@ export class ExportMapInfoComponent implements OnInit {
   public geojson: any;
   public releveForm: FormGroup;
   public userReleveCruved: any;
+
   constructor(
     public fs: ExportFormService,
     private _route: ActivatedRoute,

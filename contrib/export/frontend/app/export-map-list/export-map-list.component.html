@@ -70,18 +70,19 @@
                         <div class="modal-body">
                                 <!-- Formulaire pour le choix des standards et des formats de téléchargement des fichiers -->
                                 <br>
-                                <!-- <p>Pour continuer le téléchargement:</p> --> 
                                 <ul> <li> Choisir un format </li> </ul>
-                                <select class=form-control autocomplete="off">
-                                        <option value=zero>---</option>
-                                        <option value=un>RDF</option>
-                                        <option value=deux>Json</option>
-                                        <option value=trois>CSV</option>
+                                <select name="Format" class=form-control required aria-required="false">
+                                        <option></option>
+                                        <option value="" disabled selected hidden>---</option>
+                                        <option value="un">RDF</option>
+                                        <option value="deux">Json</option>
+                                        <option value="trois">CSV</option>
                                 </select>
                                 <br>
                                 <ul> <li> Choisir un standard </li> </ul>
-                                <select class=form-control autocomplete="off">
-                                        <option value=zero>---</option>
+                                <select class=form-control>
+                                        <option></option>
+                                        <option value="" disabled selected hidden>---</option>
                                         <option value=un>Darwin Core</option>
                                         <option value=deux>ABCD Schema</option>
                                         <option value=trois>EML</option>
@@ -113,6 +114,7 @@
                                         
                         </div>
 
+                        <!-- Bouton de fermeture de la modal pop-up ou lancement du téléchargement -->
                         <div class="modal-footer" id="choicePopup">
                                 <button type="submit" class="btn btn-danger" data-dismiss="modal" (click)="resetModal.reset();" >Fermer</button>
                                 <button [disabled]="!modalForm.valid" id="widthButton" type="submit" class="btn btn-success" (click)="showme()">OK</button>    
