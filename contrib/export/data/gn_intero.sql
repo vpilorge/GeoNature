@@ -60,32 +60,27 @@ CREATE TABLE cor_exports_roles (
 
 ALTER TABLE cor_exports_roles OWNER TO geonatuser;
 
---
--- TOC entry 361 (class 1259 OID 95772)
--- Name: t_exports; Type: TABLE; Schema: gn_intero; Owner: geonatuser
---
+-- Table: gn_intero.t_exports
 
-CREATE TABLE t_exports (
-    id_export integer NOT NULL,
-    liste_export character(255)
-);
+DROP TABLE IF EXISTS gn_intero.t_exports;
 
+CREATE TABLE gn_intero.t_exports
+(
+    selection text COLLATE pg_catalog."default",
+    status numeric DEFAULT '-2'::integer,
+    log text COLLATE pg_catalog."default",
+    start date,
+    "end" date,
+    submission timestamp(4) without time zone NOT NULL,
+    CONSTRAINT t_exports_pkey PRIMARY KEY (submission)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
 
-ALTER TABLE t_exports OWNER TO geonatuser;
-
---
--- TOC entry 362 (class 1259 OID 95780)
--- Name: t_exports_logs; Type: TABLE; Schema: gn_intero; Owner: geonatuser
---
-
-CREATE TABLE t_exports_logs (
-    id_export_logs integer NOT NULL,
-    export_logs_comment character(255)
-);
-
-
-ALTER TABLE t_exports_logs OWNER TO geonatuser;
-
+ALTER TABLE gn_intero.t_exports
+    OWNER to geonatuser;
 --
 -- TOC entry 365 (class 1259 OID 95805)
 -- Name: v_export; Type: VIEW; Schema: gn_intero; Owner: geonatuser
@@ -101,7 +96,7 @@ CREATE VIEW v_export WITH (security_barrier='false') AS
     export_occtax_sinp."altMin",
     export_occtax_sinp."cdNom",
     export_occtax_sinp."cdRef"
-   FROM pr_contact.export_occtax_sinp;
+   FROM pr_occtax.export_occtax_sinp;
 
 
 ALTER TABLE v_export OWNER TO geonatuser;
@@ -125,27 +120,6 @@ COPY bib_formats (id_export_format, export_json, export_rdf, export_csv) FROM st
 COPY cor_exports_roles (id_cor_exports_roles, roles) FROM stdin;
 \.
 
-
---
--- TOC entry 4064 (class 0 OID 95772)
--- Dependencies: 361
--- Data for Name: t_exports; Type: TABLE DATA; Schema: gn_intero; Owner: geonatuser
---
-
-COPY t_exports (id_export, liste_export) FROM stdin;
-\.
-
-
---
--- TOC entry 4065 (class 0 OID 95780)
--- Dependencies: 362
--- Data for Name: t_exports_logs; Type: TABLE DATA; Schema: gn_intero; Owner: geonatuser
---
-
-COPY t_exports_logs (id_export_logs, export_logs_comment) FROM stdin;
-\.
-
-
 --
 -- TOC entry 3898 (class 2606 OID 95789)
 -- Name: bib_formats bib_formats_pkey; Type: CONSTRAINT; Schema: gn_intero; Owner: geonatuser
@@ -162,29 +136,3 @@ ALTER TABLE ONLY bib_formats
 
 ALTER TABLE ONLY cor_exports_roles
     ADD CONSTRAINT cor_exports_roles_pkey PRIMARY KEY (id_cor_exports_roles);
-
-
---
--- TOC entry 3896 (class 2606 OID 95784)
--- Name: t_exports_logs t_export_logs_pkey; Type: CONSTRAINT; Schema: gn_intero; Owner: geonatuser
---
-
-ALTER TABLE ONLY t_exports_logs
-    ADD CONSTRAINT t_export_logs_pkey PRIMARY KEY (id_export_logs);
-
-
---
--- TOC entry 3894 (class 2606 OID 95779)
--- Name: t_exports t_exports_pkey; Type: CONSTRAINT; Schema: gn_intero; Owner: geonatuser
---
-
-ALTER TABLE ONLY t_exports
-    ADD CONSTRAINT t_exports_pkey PRIMARY KEY (id_export);
-
-
--- Completed on 2018-05-25 15:41:21 CEST
-
---
--- PostgreSQL database dump complete
---
-

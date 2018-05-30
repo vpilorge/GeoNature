@@ -1,26 +1,37 @@
-import { Component, OnInit, OnDestroy, ViewChild,ElementRef } from "@angular/core";
-import { Http } from "@angular/http";
-import { GeoJSON } from "leaflet";
-import { MapListService } from "@geonature_common/map-list/map-list.service";
-import { Subscription } from "rxjs/Subscription";
-import { ExportService } from "../services/export.service";
-import { CommonService } from "@geonature_common/service/common.service";
-import { TranslateService } from "@ngx-translate/core";
+import {
+  NgModule,
+  Directive,
+  Component,
+  OnInit,
+  OnDestroy,
+  Renderer2,
+  ViewChild,
+  ElementRef,
+  Pipe,
+  PipeTransform
+} from "@angular/core";
+import { DatePipe } from '@angular/common';
+import {
+  FormControl,
+  FormGroup,
+  FormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
+} from "@angular/forms";
 import { Router } from "@angular/router";
-import { FormControl } from "@angular/forms";
-import { ColumnActions } from "@geonature_common/map-list/map-list.component";
+import { Http } from "@angular/http";
+import { Subscription } from "rxjs/Subscription";
+import { TranslateService } from "@ngx-translate/core";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
-import { ExportConfig } from "../export.config";
+import { CommonService } from "@geonature_common/service/common.service";
 import { TaxonomyComponent } from "@geonature_common/form/taxonomy/taxonomy.component";
-import { DatatableComponent } from "@swimlane/ngx-datatable";
-import { FormGroup, FormBuilder, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { DynamicFormComponent } from "@geonature_common/form/dynamic-form/dynamic-form.component";
 import { DynamicFormService } from "@geonature_common/form/dynamic-form/dynamic-form.service";
+import { ColumnActions } from "@geonature_common/map-list/map-list.component";
+import { MapListService } from "@geonature_common/map-list/map-list.service";
 import { FILTERSLIST } from "./filters-list";
-import { Directive, Renderer2} from '@angular/core';
-import { NgModule } from '@angular/core';
-import { Pipe, PipeTransform } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { ExportService } from "../services/export.service";
 
 
 @Component({
@@ -29,8 +40,7 @@ import { DatePipe } from '@angular/common';
   styleUrls: ["./export-map-list.component.scss"],
   providers: [MapListService]
 })
-
-export class ExportMapListComponent implements OnInit {
+export class ExportMapListComponent {
   public modalForm : FormGroup;
   public displayColumns: Array<any>;
   public availableColumns: Array<any>;
@@ -39,7 +49,6 @@ export class ExportMapListComponent implements OnInit {
   public idName: string;
   public apiEndPoint: string;
   public columnActions: ColumnActions;
-  public exportConfig: any;
   public formsDefinition = FILTERSLIST;
   public dynamicFormGroup: FormGroup;
   public filterControl = new FormControl();
@@ -55,10 +64,9 @@ export class ExportMapListComponent implements OnInit {
   public varExport6 = "Export n°6";
 
   public today = Date.now();
-  
+
   advandedFilterOpen = false;
   @ViewChild(NgbModal) public modalCol: NgbModal;
-  @ViewChild(TaxonomyComponent) public taxonomyComponent: TaxonomyComponent;
   constructor(
     private _http: Http,
     private mapListService: MapListService,
@@ -92,7 +100,7 @@ export class ExportMapListComponent implements OnInit {
 
   //Fonction pour avoir un modal vierge si l'on ferme puis réouvre le modal
   resetModal(){
-    this.modalForm.reset(); 
+    this.modalForm.reset();
   }
 
   //Fonction pour envoyer un mail à l'utilisateur lorsque le ddl est terminé.
