@@ -41,6 +41,9 @@ import { ExportService } from "../services/export.service";
   providers: [MapListService]
 })
 export class ExportMapListComponent {
+  public adresseMail: string;
+  public chooseFormat: string;
+  public chooseStandard: string;
   public modalForm : FormGroup;
   public displayColumns: Array<any>;
   public availableColumns: Array<any>;
@@ -74,18 +77,19 @@ export class ExportMapListComponent {
     private _commonService: CommonService,
     private _translate: TranslateService,
     private _router: Router,
-    public ngbModal: NgbModal,
     private _fb: FormBuilder,
     private _dynformService: DynamicFormService ){
 
     this.modalForm = this._fb.group({
-      adresseMail:['', Validators.compose([Validators.required, Validators.email])]
-    })
+      adresseMail:['', Validators.compose([Validators.required, Validators.email])],
+      chooseFormat:['', Validators.required],
+      chooseStandard:['', Validators.required]
+    });
 
-  }
+    this.adresseMail = this.modalForm.controls['adresseMail'];
+    this.chooseFormat = this.modalForm.controls['chooseFormat'];
+    this.chooseStandard = this.modalForm.controls['chooseStandard'];
 
-  openModalCol(event, modal) {
-    this.ngbModal.open(modal);
   }
 
   //Fonction qui bloque le boutton de validation tant que la licence n'est pas checkée
@@ -98,12 +102,8 @@ export class ExportMapListComponent {
     this.barHide = !this.barHide;
   }
 
-  //Fonction pour avoir un modal vierge si l'on ferme puis réouvre le modal
-  resetModal(){
-    this.modalForm.reset();
-  }
-
   //Fonction pour envoyer un mail à l'utilisateur lorsque le ddl est terminé.
-  get adresseMail() { return this.modalForm.get('adresseMail'); }
+  // get adresseMail() { return this.modalForm.get('adresseMail'); }
 
 }
+

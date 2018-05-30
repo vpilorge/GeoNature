@@ -14,10 +14,6 @@
   //padding: 0px;
 }
 
-#refresh-filter{
-  color:red;
-}
-
 i.action {
   margin-top: 30px;
   margin-left: 10px;
@@ -122,12 +118,6 @@ ngx-datatable {
   align-self: flex-end;
 }
 
-#export_tuned{
-  margin-top: 25px;
-  margin-bottom: 5px;
-  align-self: right;
-}
-
 #checkLicence{
   margin-left:50px;
   margin-top: 25px;
@@ -137,11 +127,6 @@ ngx-datatable {
 
 #readlicence{
   margin-bottom: 10px;
-}
-
-#part{
-  margin-left: 5px;
-  margin-right: 5px;
 }
 
 #myModal{
@@ -204,5 +189,14 @@ margin-left: 27%;
 
 .ng-invalid[required], .ng-invalid.required  {
   border-left: 5px solid rgb(184, 101, 101); 
+}
+
+.alert{
+  line-height:15px;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: rgba(134, 133, 133, 0.575);
+  opacity: 1; /* Firefox */
 }
 
