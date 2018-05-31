@@ -3,7 +3,7 @@
         <div class="container card">
             <div id="title">
             <h2>EXPORTS</h2>
-            <hr align="left" width="75%">    
+            <hr align="left" width="75%">
             </div>
             <div id="textPresentation">
                 <p>Voici la liste des exports disponibles. Ces exports ont été programmés par l'administration Géonature.</p>
@@ -34,33 +34,33 @@
             </div>
 
             <div id="checkLicence">
-                
+
                 <label for="licence">Acceptez la licence</label>
                 <input type="checkbox" class="form-control" id="licence" (click)="follow()" ngModel required/>
 
             </div>
 
-            <div id="readlicence">  
+            <div id="readlicence">
             <a href="./licence.pdf" download>
             <input type="button" class="btn btn-outline-secondary btn-sm pull-right" value="Télécharger la licence">
             </a>
             </div>
 
-        
+
         <hr align="right" width="75%">
 
-        <div id="choice">    
-                <a routerLink=""><button type="submit" id="AccueilButton" class="btn btn-danger">Fermer</button></a> 
+        <div id="choice">
+                <a routerLink=""><button type="submit" id="AccueilButton" class="btn btn-danger">Fermer</button></a>
                 <button [disabled]="!buttonDisabled" type="submit" id="AccueilButton" class="btn btn-success" data-toggle="modal" data-target="#myModal" data-backdrop="false" ng-model="ddl" ng-required="licence"> Télécharger </button>
         </div>
-        
+
         </div>
     </div>
 
         <!-- Modal Téléchargement Popup-->
         <div class="modal fade" id="myModal" role="dialog">
           <div class="modal-dialog">
-          
+
             <!-- Modal content-->
             <form [formGroup]="modalForm" class="modal-content">
                         <div class="modal-header">
@@ -99,7 +99,7 @@
 
                                 <div class="alert alert-danger" [hidden]="!adresseMail.hasError('required')">Adresse mail obligatoire</div>
                                 <div class="alert alert-danger" [hidden]="!adresseMail.hasError('pattern')">Format non valide</div>
-                                        
+
                                 <!-- Affichage d'une barre de progression lors du téléchargement du fichier -->
                                 <div class="telechargement" *ngIf="barHide">
                                   Téléchargement en cours...
@@ -109,18 +109,18 @@
                                         <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
                                                 <span class="sr-only">70% effectué (success)</span>
                                         </div>
-                                </div> 
+                                </div>
                                 <br>
-                                        
+
                         </div>
 
                         <!-- Bouton de fermeture de la modal pop-up ou lancement du téléchargement -->
                         <div class="modal-footer" id="choicePopup">
-                                <button type="submit" class="btn btn-danger" data-dismiss="modal" (click)="resetModal.reset();" >Fermer</button>
-                                <button [disabled]="!modalForm.valid" id="widthButton" type="submit" class="btn btn-success" (click)="showme()">OK</button>    
+                                <button type="submit" class="btn btn-danger" data-dismiss="modal" (click)="resetModal();" >Fermer</button>
+                                <button [disabled]="!modalForm.valid" id="widthButton" type="submit" class="btn btn-success" (click)="showme()">OK</button>
                         </div>
              </form>
-            
+
           </div>
         </div>
 

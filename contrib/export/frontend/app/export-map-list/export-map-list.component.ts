@@ -1,12 +1,8 @@
 import {
   NgModule,
-  Directive,
   Component,
-  OnInit,
-  OnDestroy,
   Renderer2,
   ViewChild,
-  ElementRef,
   Pipe,
   PipeTransform
 } from "@angular/core";
@@ -21,7 +17,7 @@ import {
 } from "@angular/forms";
 import { Router } from "@angular/router";
 import { Http } from "@angular/http";
-import { Subscription } from "rxjs/Subscription";
+import { Observable } from "rxjs/Observable";
 import { TranslateService } from "@ngx-translate/core";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { CommonService } from "@geonature_common/service/common.service";
@@ -33,6 +29,8 @@ import { MapListService } from "@geonature_common/map-list/map-list.service";
 import { FILTERSLIST } from "./filters-list";
 import { ExportService } from "../services/export.service";
 
+
+const apiEndpoint='http://localhost:8000/interop';
 
 @Component({
   selector: "pnx-export-map-list",
@@ -64,7 +62,6 @@ export class ExportMapListComponent {
   public varExport6 = "Export n°6";
 
   public today = Date.now();
-
   advandedFilterOpen = false;
   @ViewChild(NgbModal) public modalCol: NgbModal;
   constructor(
@@ -96,6 +93,10 @@ export class ExportMapListComponent {
   //Fonction qui affiche la barre de téléchargement après validation
   showme(){
     this.barHide = !this.barHide;
+    if (!this.barHide) {
+      // FIXME: get checked export
+      this.getExportProgress(1527763714.449634)
+    }
   }
 
   //Fonction pour avoir un modal vierge si l'on ferme puis réouvre le modal
@@ -105,5 +106,21 @@ export class ExportMapListComponent {
 
   //Fonction pour envoyer un mail à l'utilisateur lorsque le ddl est terminé.
   get adresseMail() { return this.modalForm.get('adresseMail'); }
+
+  getExportProgress(submissionID: number) {
+    let progress = Observable.interval(1500)
+      .switchMap(() => this._http.get(apiEndpoint + '/progress/' + submissionID))
+      .map(data => data.json())
+      .takeWhile(data => data.status === '-2')
+      .subscribe(
+        data => console.debug(data),
+        error => console.error(error),
+        () => {
+          progress.unsubscribe();
+          window.location.href = apiEndpoint + '/exports/export_' + submissionID + '.csv';
+        }
+      );
+    }
+  }
 
 }
