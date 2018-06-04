@@ -13,7 +13,13 @@ class Export(DB.Model):
     # TODO: FK_EXPORT_TYPE
 
     def __init__(self, selection):
-        self.selection = selection
+        self.selection = selection or ','.join([
+            'nomCite',
+            'dateDebut', 'dateFin',
+            'heureDebut', 'heureFin',
+            'altMax', 'altMin',
+            'cdNom', 'cdRef'
+        ])
         self.submission = datetime.datetime.utcnow()
 
     def __repr__(self):
