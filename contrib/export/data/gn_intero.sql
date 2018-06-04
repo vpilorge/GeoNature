@@ -71,7 +71,7 @@ CREATE TABLE gn_intero.t_exports
     log text COLLATE pg_catalog."default",
     start date,
     "end" date,
-    submission timestamp(4) without time zone NOT NULL,
+    submission TIMESTAMP NOT NULL,
     CONSTRAINT t_exports_pkey PRIMARY KEY (submission)
 )
 WITH (
