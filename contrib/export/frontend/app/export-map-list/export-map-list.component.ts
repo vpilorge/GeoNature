@@ -1,8 +1,12 @@
 import {
   NgModule,
+  Directive,
   Component,
+  OnInit,
+  OnDestroy,
   Renderer2,
   ViewChild,
+  ElementRef,
   Pipe,
   PipeTransform
 } from "@angular/core";
@@ -17,17 +21,18 @@ import {
 } from "@angular/forms";
 import { Router } from "@angular/router";
 import { Http } from "@angular/http";
-import { Observable } from "rxjs/Observable";
+import { Subscription } from "rxjs/Subscription";
 import { TranslateService } from "@ngx-translate/core";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { CommonService } from "@geonature_common/service/common.service";
+import { TaxonomyComponent } from "@geonature_common/form/taxonomy/taxonomy.component";
 import { DynamicFormComponent } from "@geonature_common/form/dynamic-form/dynamic-form.component";
 import { DynamicFormService } from "@geonature_common/form/dynamic-form/dynamic-form.service";
+import { ColumnActions } from "@geonature_common/map-list/map-list.component";
 import { MapListService } from "@geonature_common/map-list/map-list.service";
+import { FILTERSLIST } from "./filters-list";
 import { ExportService } from "../services/export.service";
 
-
-const apiEndpoint='http://localhost:8000/interop';
 
 @Component({
   selector: "pnx-export-map-list",
@@ -36,7 +41,6 @@ const apiEndpoint='http://localhost:8000/interop';
   providers: [MapListService]
 })
 export class ExportMapListComponent {
-<<<<<<< HEAD
   public adresseMail: string;
   public chooseFormat: string;
   public chooseStandard: string;
@@ -54,8 +58,6 @@ export class ExportMapListComponent {
   public formsSelected = [];
   public buttonDisabled: boolean = false;
   public barHide: boolean = false;
-=======
->>>>>>> 5d765d2a5d4f232578258ca4edf06d2cc92be56f
 
   public varExport1 = "Export n°1";
   public varExport2 = "Export n°2";
@@ -64,12 +66,10 @@ export class ExportMapListComponent {
   public varExport5 = "Export n°5";
   public varExport6 = "Export n°6";
 
-  public modalForm : FormGroup;
-  public buttonDisabled: boolean = false;
-  public barHide: boolean = false;
   public today = Date.now();
-  @ViewChild(NgbModal) public modalCol: NgbModal;
 
+  advandedFilterOpen = false;
+  @ViewChild(NgbModal) public modalCol: NgbModal;
   constructor(
     private _http: Http,
     private mapListService: MapListService,
@@ -90,59 +90,20 @@ export class ExportMapListComponent {
     this.chooseFormat = this.modalForm.controls['chooseFormat'];
     this.chooseStandard = this.modalForm.controls['chooseStandard'];
 
-<<<<<<< HEAD
   }
-=======
-  // openModalCol(event, modal) {
-  //   this.ngbModal.open(modal);
-  // }
->>>>>>> 5d765d2a5d4f232578258ca4edf06d2cc92be56f
 
   //Fonction qui bloque le boutton de validation tant que la licence n'est pas checkée
   follow(){
     this.buttonDisabled = !this.buttonDisabled;
-    const exportList = [window.document.querySelectorAll('input[name="options"]:checked')]
-    console.debug(exportList)
   }
 
   //Fonction qui affiche la barre de téléchargement après validation
   showme(){
-    // const exportList = [window.document.querySelectorAll('input[name="options"]:checked')]
     this.barHide = !this.barHide;
-    if (!this.barHide) {
-      // FIXME: get checked export
-      // this.getExportProgress(1527763714.449634)
-    }
   }
 
   //Fonction pour envoyer un mail à l'utilisateur lorsque le ddl est terminé.
   // get adresseMail() { return this.modalForm.get('adresseMail'); }
 
-  populateExportList() {
-    this._http.get(apiEndpoint + '/exports').subscribe(
-      data => {
-        console.debug(data)
-        // this.varExport1 = blabla
-      }
-    )
-  }
-
-  getExportProgress(submissionID: number) {
-    let progress = Observable.interval(1500)
-      .switchMap(() => this._http.get(apiEndpoint + '/progress/' + submissionID))
-      .map(data => data.json())
-      .takeWhile(data => data.status === '-2')
-      .subscribe(
-        data => {
-          // https://www.postgresql.org/message-id/CADdR5ny_0dFwnD%2BsuBnV1Vz6NDKbFHeWoV1EDv9buhDCtc3aAA%40mail.gmail.com
-          // then update progressbar
-          console.debug(data)
-        },
-        error => console.error(error),
-        () => {
-          progress.unsubscribe();
-          window.location.href = apiEndpoint + '/exports/export_' + submissionID + '.csv';
-        });
-  }
 }
 
