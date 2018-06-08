@@ -29,6 +29,7 @@ import { Export, ExportService } from "../services/export.service";
   styleUrls: ["./export-map-list.component.scss"],
   providers: []
 })
+
 export class ExportMapListComponent {
   exports$: Observable<Export[]>
   public modalForm : FormGroup;
@@ -37,6 +38,7 @@ export class ExportMapListComponent {
   public today = Date.now();
   public chooseFormat: string;
   public chooseStandard: string;
+  public closeResult: string;
 
   @ViewChild(NgbModal) public modalCol: NgbModal;
   constructor(
@@ -46,21 +48,40 @@ export class ExportMapListComponent {
     private _router: Router,
     public ngbModal: NgbModal,
     private _fb: FormBuilder,
+    private modalService: NgbModal,
     private _dynformService: DynamicFormService) {
 
-    this.modalForm = this._fb.group({
-      adresseMail:['', Validators.compose([Validators.required, Validators.email])],
-      chooseFormat:['', Validators.required],
-      chooseStandard:['', Validators.required]
-    });
+      this.modalForm = this._fb.group({
+        adresseMail:['', Validators.compose([Validators.required, Validators.email])],
+        chooseFormat:['', Validators.required],
+        chooseStandard:['', Validators.required]
+      });
 
-    // this.adresseMail = this.modalForm.controls['adresseMail'];
-    this.chooseFormat = this.modalForm.controls['chooseFormat'];
-    this.chooseStandard = this.modalForm.controls['chooseStandard'];
+      // this.adresseMail = this.modalForm.controls['adresseMail'];
+      this.chooseFormat = this.modalForm.controls['chooseFormat'];
+      this.chooseStandard = this.modalForm.controls['chooseStandard'];
 
-    this.exports$ = this.store.exports;
-    this.store.getExports();
-  }
+      this.exports$ = this.store.exports;
+      this.store.getExports();
+    }
+
+    open(content) {
+      this.modalService.open(content).result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+      }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      });
+    }
+
+    private getDismissReason(reason: any): string {
+      if (reason === ModalDismissReasons.ESC) {
+        return 'by pressing ESC';
+      } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+        return 'by clicking on a backdrop';
+      } else {
+        return  `with: ${reason}`;
+      }
+    }
 
   //Fonction qui bloque le boutton de validation tant que la licence n'est pas checkée
   follow() {
@@ -82,5 +103,5 @@ export class ExportMapListComponent {
 
   //Fonction pour envoyer un mail à l'utilisateur lorsque le ddl est terminé.
   get adresseMail() { return this.modalForm.get('adresseMail'); }
-
+  
 }

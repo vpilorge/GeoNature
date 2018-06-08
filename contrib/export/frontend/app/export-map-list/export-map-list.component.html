@@ -36,16 +36,15 @@
 
         <div id="choice">
                 <a routerLink=""><button type="submit" id="AccueilButton" class="btn btn-danger">Fermer</button></a>
-                <button [disabled]="!buttonDisabled" type="submit" id="AccueilButton" class="btn btn-success" data-toggle="modal" data-target="#myModal" data-backdrop="false" ng-model="ddl" ng-required="licence"> Télécharger </button>
+                <button [disabled]="!buttonDisabled" type="submit" id="AccueilButton" class="btn btn-success" ngbTooltip="Accepter la licence" (click)="open(content)" ng-required="licence"> Télécharger </button>
         </div>
 
         </div>
     </div>
 
         <!-- Modal Téléchargement Popup-->
-        <div class="modal fade" id="myModal" role="dialog">
-          <div class="modal-dialog">
-
+        <ng-template #content let-c="close" let-d="dismiss">
+        
             <!-- Modal content-->
             <form [formGroup]="modalForm" class="modal-content">
                         <div class="modal-header">
@@ -82,20 +81,21 @@
                                 <input class="form-control" id="adresseMail" formControlName="adresseMail" type="email" placeholder="---" style="display:block; margin:auto;" autocomplete="off" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
                                 <br><br>
 
-                                <div class="alert alert-danger" [hidden]="!adresseMail.hasError('required')">Adresse mail obligatoire</div>
-                                <div class="alert alert-danger" [hidden]="!adresseMail.hasError('pattern')">Format du mail non valide</div>
-                                <div class="alert alert-danger" [hidden]="!chooseFormat.hasError('required')">Choisir un format d'export</div>   
-                                <div class="alert alert-danger" [hidden]="!chooseStandard.hasError('required')">Choisir un standard d'export</div>   
+                                <!-- <div class="alert alert-danger" [hidden]="!adresseMail.hasError('required')">Adresse mail obligatoire</div> -->
+
+                                <ngb-alert type="danger" [dismissible]="false" [hidden]="!adresseMail.hasError('required')">Adresse mail obligatoire.</ngb-alert>
+                                <ngb-alert type="danger" [dismissible]="false" [hidden]="!adresseMail.hasError('pattern')">Format du mail non valide.</ngb-alert>
+                                <ngb-alert type="danger" [dismissible]="false" [hidden]="!chooseFormat.hasError('required')">Choisir un format d'export.</ngb-alert>   
+                                <ngb-alert type="danger" [dismissible]="false" [hidden]="!chooseStandard.hasError('required')">Choisir un standard d'export.</ngb-alert>   
+
 
                                 <!-- Affichage d'une barre de progression lors du téléchargement du fichier -->
                                 <div class="telechargement" *ngIf="barHide">
                                   Téléchargement en cours...
                                 </div>
 
-                                <div class="progress" *ngIf="barHide">
-                                        <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                                                <span class="sr-only">70% effectué (success)</span>
-                                        </div>
+                                <div *ngIf="barHide">
+                                        <p><ngb-progressbar type="info" [value]="50" [striped]="true" [animated]="true"></ngb-progressbar></p>
                                 </div>
                                 <br>
 
@@ -103,13 +103,11 @@
 
                         <!-- Bouton de fermeture de la modal pop-up ou lancement du téléchargement -->
                         <div class="modal-footer" id="choicePopup">
-                                <button type="submit" class="btn btn-danger" data-dismiss="modal" (click)="resetModal();" >Fermer</button>
+                                <button type="submit" class="btn btn-danger" data-dismiss="modal" (click)="c('Close click')" >Fermer</button>
                                 <button [disabled]="!modalForm.valid" id="widthButton" type="submit" class="btn btn-success" (click)="showme()">OK</button>
                         </div>
              </form>
              
-
-          </div>
-        </div>
+        </ng-template>
 
 </div>
