@@ -63,10 +63,12 @@ def getExport(export):
 @blueprint.route('/exports')
 # @fnauth.check_auth_cruved('R')
 def getExports():
-    midnight = datetime.combine(datetime.today(), time.min)
+    # midnight = datetime.combine(datetime.today(), time.min)
+    # .filter(Export.end>=midnight)\
     exports = Export.query\
                     .filter(Export.status==0)\
-                    .filter(Export.end>=midnight)\
+                    .order_by(Export.end.desc())\
+                    .limit(6)\
                     .all()
     exports = [
         ('export_{id}.{ext}'.format(

@@ -101,22 +101,6 @@ CREATE VIEW v_export WITH (security_barrier='false') AS
 
 ALTER TABLE v_export OWNER TO geonatuser;
 
-CREATE VIEW v_export_json WITH (security_barrier='false') AS
-    SELECT row_to_json(t)
-    FROM (
-        SELECT export_occtax_sinp."nomCite",
-    export_occtax_sinp."dateDebut",
-    export_occtax_sinp."dateFin",
-    export_occtax_sinp."heureDebut",
-    export_occtax_sinp."heureFin",
-    export_occtax_sinp."altMax",
-    export_occtax_sinp."altMin",
-    export_occtax_sinp."cdNom",
-    export_occtax_sinp."cdRef"
-    FROM pr_contact.export_occtax_sinp;
-    ) t
-ALTER TABLE v_export_json OWNER TO geonatuser;
-
 --
 -- TOC entry 4066 (class 0 OID 95785)
 -- Dependencies: 363

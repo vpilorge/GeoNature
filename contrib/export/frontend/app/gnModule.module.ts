@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { Routes, RouterModule } from "@angular/router";
-import { Http } from "@angular/http";
+import { HttpClientModule } from "@angular/common/http";
 import { GN2CommonModule } from "@geonature_common/GN2Common.module";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { ExportMapListComponent } from "./export-map-list/export-map-list.component";
@@ -12,7 +12,12 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [CommonModule, GN2CommonModule, RouterModule.forChild(routes)],
+  imports: [
+    HttpClientModule,
+    CommonModule,
+    GN2CommonModule,
+    RouterModule.forChild(routes)
+  ],
   declarations: [
     ExportMapListComponent
   ],
