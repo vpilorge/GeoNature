@@ -36,11 +36,9 @@ export class ExportMapListComponent {
   public buttonDisabled: boolean = false;
   public barHide: boolean = false;
   public today = Date.now();
-  public chooseFormat: string;
-  public chooseStandard: string;
   public closeResult: string;
 
-  @ViewChild(NgbModal) public modalCol: NgbModal;
+  @ViewChild(NgbModal)
   constructor(
     private store: ExportService,
     private _commonService: CommonService,
@@ -57,12 +55,20 @@ export class ExportMapListComponent {
         chooseStandard:['', Validators.required]
       });
 
-      // this.adresseMail = this.modalForm.controls['adresseMail'];
-      this.chooseFormat = this.modalForm.controls['chooseFormat'];
-      this.chooseStandard = this.modalForm.controls['chooseStandard'];
-
       this.exports$ = this.store.exports;
       this.store.getExports();
+    }
+
+    get chooseFormat() {
+      return this.modalForm.get('chooseFormat');
+    }
+  
+    get chooseStandard() {
+      return this.modalForm.get('chooseStandard');
+    }
+
+    get adresseMail() { 
+      return this.modalForm.get('adresseMail'); 
     }
 
     open(content) {
@@ -72,6 +78,8 @@ export class ExportMapListComponent {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       });
     }
+
+
 
     private getDismissReason(reason: any): string {
       if (reason === ModalDismissReasons.ESC) {
@@ -101,7 +109,4 @@ export class ExportMapListComponent {
     this.modalForm.reset();
   }
 
-  //Fonction pour envoyer un mail à l'utilisateur lorsque le ddl est terminé.
-  get adresseMail() { return this.modalForm.get('adresseMail'); }
-  
 }
