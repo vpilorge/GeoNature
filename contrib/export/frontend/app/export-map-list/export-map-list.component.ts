@@ -49,6 +49,7 @@ export class ExportMapListComponent {
     private modalService: NgbModal,
     private _dynformService: DynamicFormService) {
 
+      // Validation des champs du formulaire
       this.modalForm = this._fb.group({
         adresseMail:['', Validators.compose([Validators.required, Validators.email])],
         chooseFormat:['', Validators.required],
@@ -71,6 +72,7 @@ export class ExportMapListComponent {
       return this.modalForm.get('adresseMail'); 
     }
 
+    // Utilisation du modal
     open(content) {
       this.modalService.open(content).result.then((result) => {
         this.closeResult = `Closed with: ${result}`;
@@ -78,8 +80,6 @@ export class ExportMapListComponent {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       });
     }
-
-
 
     private getDismissReason(reason: any): string {
       if (reason === ModalDismissReasons.ESC) {

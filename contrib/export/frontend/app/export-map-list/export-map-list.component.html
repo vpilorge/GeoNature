@@ -1,6 +1,8 @@
 <div id="all">
     <div class="row row-m">
         <div class="container card">
+
+            <!-- Texte de présentation -->
             <div id="title">
             <h2>EXPORTS</h2>
             <hr align="left" width="75%">
@@ -11,13 +13,14 @@
             <div id="textPresentation">
                 <p>Pour modifier cette liste ou avoir un export supplémentaire, veuillez contacter le service admin.</p>
             </div>
-                <!-- Liste des exports disponibles au téléchargement -->
+            <!-- Liste des exports disponibles au téléchargement -->
             <div class="btn-group btn-group-vertical" data-toggle="buttons" id="button-export">
               <label *ngFor='let export of this.exports$ | async; let i = index;' class="btn btn-primary active">
                 <input type="radio" name="options" [checked]="i==0" [id]="export.path">Export n°{{ i + 1 }} - {{ export.date | date: 'dd/MM/yyyy' }}
               </label>
             </div>
 
+            <!-- Boutton pour accepter la licence -->
             <div id="checkLicence">
 
                 <label for="licence">Acceptez la licence</label>
@@ -25,8 +28,9 @@
 
             </div>
 
+            <!-- Bouton pour afficher et télécharger la licence -->
             <div id="readlicence">
-                <a href="./licence.pdf" download="licence.pdf" type="application/octet-stream">
+                <a href="/assets/licence.pdf" download target="" type="application/pdf">
                 <input type="button" class="btn btn-outline-secondary btn-sm pull-right" value="Lire la licence">
                 </a>
             </div>
@@ -34,6 +38,7 @@
 
         <hr align="right" width="75%">
 
+        <!-- Bouton pour accéder au formulaire ou sortir du module -->
         <div id="choice">
                 <a routerLink=""><button type="submit" id="AccueilButton" class="btn btn-danger">Fermer</button></a>
                 <button [disabled]="!buttonDisabled" type="submit" id="AccueilButton" class="btn btn-success" ngbTooltip="Accepter la licence" (click)="open(content)" ng-required="licence"> Télécharger </button>
@@ -81,8 +86,8 @@
                                 <input class="form-control" id="adresseMail" formControlName="adresseMail" type="email" placeholder="---" style="display:block; margin:auto;" autocomplete="off" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
                                 <br><br>
 
-                                <!-- <div class="alert alert-danger" [hidden]="!adresseMail.hasError('required')">Adresse mail obligatoire</div> -->
-
+            
+                                <!-- Liste messages d'erreurs lors de la validation -->
                                 <ngb-alert type="danger" [dismissible]="false" [hidden]="!adresseMail.hasError('required')">Adresse mail obligatoire.</ngb-alert>
                                 <ngb-alert type="danger" [dismissible]="false" [hidden]="!adresseMail.hasError('pattern')">Format du mail non valide.</ngb-alert>
                                 <ngb-alert type="danger" [dismissible]="false" [hidden]="!chooseFormat.hasError('required')">Choisir un format d'export.</ngb-alert>   
