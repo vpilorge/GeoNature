@@ -91,7 +91,7 @@ export class ExportMapListComponent {
       }
     }
 
-  //Fonction qui bloque le boutton de validation tant que la licence n'est pas checkée
+  //Fonction qui bloque le bouton de validation tant que la licence n'est pas checkée
   follow() {
     this.buttonDisabled = !this.buttonDisabled;
   }
