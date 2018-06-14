@@ -153,7 +153,7 @@ CREATE VIEW v_export_SINP WITH (security_barrier='false') AS
 
 CREATE VIEW v_export_SINP_json WITH (security_barrier='false') AS
     SELECT row_to_json(t.*) AS row_to_json
-        FROM ( SELECT export_occtax_sinp."permId",
+    FROM ( SELECT export_occtax_sinp."permId",
     export_occtax_sinp."statObs",
     export_occtax_sinp."nomCite",
     export_occtax_sinp."dateDebut",
@@ -202,6 +202,71 @@ CREATE VIEW v_export_SINP_json WITH (security_barrier='false') AS
     export_occtax_sinp."WKT",
     export_occtax_sinp."natObjGeo"
    FROM pr_contact.export_occtax_sinp)t;
+
+CREATE VIEW v_export_DwC WITH (security_barrier='false') AS
+ SELECT export_occtax_sinp."permId" AS "OccurrenceID",
+    concat(export_occtax_sinp."statObs",' ', export_occtax_sinp."statSource") AS "OccurrenceStatus",
+    export_occtax_sinp."nomCite" AS "ScientificName",
+    concat(export_occtax_sinp."dateDebut",' ',export_occtax_sinp."heureDebut",' , ', export_occtax_sinp."dateFin",' ', export_occtax_sinp."heureFin") AS "eventDate",
+    export_occtax_sinp."altMax" AS "maximumElevationInMeters",
+    export_occtax_sinp."altMin" AS "minimumElevationInMeters",
+    export_occtax_sinp."cdNom" AS "taxonID",
+    export_occtax_sinp.datedet AS "dateIdentified",
+    export_occtax_sinp.comment AS "occurrenceRemarks",
+    export_occtax_sinp."idOrigine" AS "CatalogNumber",
+    export_occtax_sinp."jddCode" AS "CollectionCode",
+    export_occtax_sinp."jddId" AS "CollectionId",
+    export_occtax_sinp."refBiblio" AS "associatedReferences",
+    export_occtax_sinp."ocMethDet" AS "basisOfRecord",
+    export_occtax_sinp."denbrMin" AS "Individual Count",
+    concat(export_occtax_sinp."obsId",' ', export_occtax_sinp."obsNomOrg") AS "recordedBy",
+    export_occtax_sinp."detId" AS "identifiedBy",
+    export_occtax_sinp."orgGestDat" AS "InstitutionCode",
+    export_occtax_sinp."WKT" AS "footprintWKT"
+   FROM pr_contact.export_occtax_sinp;
+
+CREATE VIEW v_export_DwC_json WITH (security_barrier='false') AS
+    SELECT row_to_json(t.*) AS row_to_json
+    FROM ( SELECT export_occtax_sinp."permId" AS "OccurrenceID",
+    concat(export_occtax_sinp."statObs",' ', export_occtax_sinp."statSource") AS "OccurrenceStatus",
+    export_occtax_sinp."nomCite" AS "ScientificName",
+    concat(export_occtax_sinp."dateDebut",' ',export_occtax_sinp."heureDebut",' , ', export_occtax_sinp."dateFin",' ', export_occtax_sinp."heureFin") AS "eventDate",
+    export_occtax_sinp."altMax" AS "maximumElevationInMeters",
+    export_occtax_sinp."altMin" AS "minimumElevationInMeters",
+    export_occtax_sinp."cdNom" AS "taxonID",
+    export_occtax_sinp.datedet AS "dateIdentified",
+    export_occtax_sinp.comment AS "occurrenceRemarks",
+    export_occtax_sinp."idOrigine" AS "CatalogNumber",
+    export_occtax_sinp."jddCode" AS "CollectionCode",
+    export_occtax_sinp."jddId" AS "CollectionId",
+    export_occtax_sinp."refBiblio" AS "associatedReferences",
+    export_occtax_sinp."ocMethDet" AS "basisOfRecord",
+    export_occtax_sinp."denbrMin" AS "Individual Count",
+    concat(export_occtax_sinp."obsId",' ', export_occtax_sinp."obsNomOrg") AS "recordedBy",
+    export_occtax_sinp."detId" AS "identifiedBy",
+    export_occtax_sinp."orgGestDat" AS "InstitutionCode",
+    export_occtax_sinp."WKT" AS "footprintWKT"
+    FROM pr_contact.export_occtax_sinp)t;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 --
 -- TOC entry 4066 (class 0 OID 95785)
 -- Dependencies: 363
