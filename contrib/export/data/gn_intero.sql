@@ -86,7 +86,7 @@ ALTER TABLE gn_intero.t_exports
 -- Name: v_export; Type: VIEW; Schema: gn_intero; Owner: geonatuser
 --
 
-CREATE VIEW v_export WITH (security_barrier='false') AS
+CREATE OR REPLACE VIEW gn_intero.v_export WITH (security_barrier='false') AS
  SELECT export_occtax_sinp."nomCite",
     export_occtax_sinp."dateDebut",
     export_occtax_sinp."dateFin",
@@ -96,11 +96,10 @@ CREATE VIEW v_export WITH (security_barrier='false') AS
     export_occtax_sinp."altMin",
     export_occtax_sinp."cdNom",
     export_occtax_sinp."cdRef",
-    export_occtax_sinp.""
    FROM pr_occtax.export_occtax_sinp;
 
 
-CREATE VIEW v_export_SINP WITH (security_barrier='false') AS
+CREATE OR REPLACE VIEW gn_intero.v_export_SINP WITH (security_barrier='false') AS
  SELECT export_occtax_sinp."permId",
     export_occtax_sinp."statObs",
     export_occtax_sinp."nomCite",
@@ -149,9 +148,9 @@ CREATE VIEW v_export_SINP WITH (security_barrier='false') AS
     export_occtax_sinp."orgGestDat",
     export_occtax_sinp."WKT",
     export_occtax_sinp."natObjGeo"
-   FROM pr_contact.export_occtax_sinp;
+   FROM pr_occtax.export_occtax_sinp;
 
-CREATE VIEW v_export_SINP_json WITH (security_barrier='false') AS
+CREATE OR REPLACE VIEW gn_intero.v_export_SINP_json WITH (security_barrier='false') AS
     SELECT row_to_json(t.*) AS row_to_json
     FROM ( SELECT export_occtax_sinp."permId",
     export_occtax_sinp."statObs",
@@ -201,9 +200,9 @@ CREATE VIEW v_export_SINP_json WITH (security_barrier='false') AS
     export_occtax_sinp."orgGestDat",
     export_occtax_sinp."WKT",
     export_occtax_sinp."natObjGeo"
-   FROM pr_contact.export_occtax_sinp)t;
+   FROM pr_occtax.export_occtax_sinp)t;
 
-CREATE VIEW v_export_DwC WITH (security_barrier='false') AS
+CREATE OR REPLACE VIEW gn_intero.v_export_DwC WITH (security_barrier='false') AS
  SELECT export_occtax_sinp."permId" AS "OccurrenceID",
     concat(export_occtax_sinp."statObs",' ', export_occtax_sinp."statSource") AS "OccurrenceStatus",
     export_occtax_sinp."nomCite" AS "ScientificName",
@@ -223,9 +222,9 @@ CREATE VIEW v_export_DwC WITH (security_barrier='false') AS
     export_occtax_sinp."detId" AS "identifiedBy",
     export_occtax_sinp."orgGestDat" AS "InstitutionCode",
     export_occtax_sinp."WKT" AS "footprintWKT"
-   FROM pr_contact.export_occtax_sinp;
+   FROM pr_occtax.export_occtax_sinp;
 
-CREATE VIEW v_export_DwC_json WITH (security_barrier='false') AS
+CREATE OR REPLACE VIEW gn_intero.v_export_DwC_json WITH (security_barrier='false') AS
     SELECT row_to_json(t.*) AS row_to_json
     FROM ( SELECT export_occtax_sinp."permId" AS "OccurrenceID",
     concat(export_occtax_sinp."statObs",' ', export_occtax_sinp."statSource") AS "OccurrenceStatus",
@@ -246,7 +245,7 @@ CREATE VIEW v_export_DwC_json WITH (security_barrier='false') AS
     export_occtax_sinp."detId" AS "identifiedBy",
     export_occtax_sinp."orgGestDat" AS "InstitutionCode",
     export_occtax_sinp."WKT" AS "footprintWKT"
-    FROM pr_contact.export_occtax_sinp)t;
+    FROM pr_occtax.export_occtax_sinp)t;
 
 
 
