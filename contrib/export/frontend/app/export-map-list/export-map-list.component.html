@@ -15,10 +15,22 @@
             </div>
             <!-- Liste des exports disponibles au téléchargement -->
             <div class="btn-group btn-group-vertical" data-toggle="buttons" id="button-export">
-              <label *ngFor='let export of this.exports$ | async; let i = index;' class="btn btn-primary active">
-                <input type="radio" name="options" [checked]="i==0" [id]="export.path">Export n°{{ i + 1 }} - {{ export.date | date: 'dd/MM/yyyy' }}
+              <label *ngFor='let export of exportLabels$ | async; let i = index;' class="btn btn-primary active">
+                <input type="radio" name="options" [checked]="i==0" [id]="export.label">Export n°{{ export.label }} - {{ export.date | date: 'dd/MM/yyyy' }}
               </label>
             </div>
+
+            <!-- <div class="btn-group btn-group-vertical" data-toggle="buttons" id="button-export">
+                <label class="btn btn-primary active">
+                        <input type="radio" name="options">Export n°1 - {{ today | date: 'dd/MM/yyyy'}}
+                </label>
+                <label class="btn btn-primary">
+                        <input type="radio" name="options">Export n°2 - {{ today | date: 'dd/MM/yyyy'}}
+                </label>
+                <label class="btn btn-primary">
+                        <input type="radio" name="options">Export n°3 - {{ today | date: 'dd/MM/yyyy'}}
+                </label>
+            </div> -->
 
             <!-- Boutton pour accepter la licence -->
             <div id="checkLicence">

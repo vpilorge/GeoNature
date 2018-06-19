@@ -1,4 +1,4 @@
---
+  --
 -- PostgreSQL database dump
 --
 
@@ -44,8 +44,8 @@ CREATE TABLE bib_formats (
     export_csv boolean
 );
 
-
-ALTER TABLE bib_formats OWNER TO geonatuser;
+ALTER TABLE ONLY bib_formats
+    ADD CONSTRAINT bib_formats_pkey PRIMARY KEY (id_export_format);
 
 --
 -- TOC entry 364 (class 1259 OID 95790)
@@ -57,34 +57,43 @@ CREATE TABLE cor_exports_roles (
     roles character(255)
 );
 
+ALTER TABLE ONLY cor_exports_roles
+    ADD CONSTRAINT cor_exports_roles_pkey PRIMARY KEY (id_cor_exports_roles);
 
-ALTER TABLE cor_exports_roles OWNER TO geonatuser;
-
--- Table: gn_intero.t_exports
-
-DROP TABLE IF EXISTS gn_intero.t_exports;
-
+-- DROP TABLE gn_intero.t_exports;
 CREATE TABLE gn_intero.t_exports
 (
-    selection text COLLATE pg_catalog."default",
-    status numeric DEFAULT '-2'::integer,
-    log text COLLATE pg_catalog."default",
-    start date,
-    "end" date,
-    submission TIMESTAMP NOT NULL,
-    CONSTRAINT t_exports_pkey PRIMARY KEY (submission)
+  id integer NOT NULL,
+  label text COLLATE pg_catalog."default" NOT NULL,
+  CONSTRAINT t_export_pkey1 PRIMARY KEY (id)
 )
 WITH (
     OIDS = FALSE
 )
 TABLESPACE pg_default;
 
-ALTER TABLE gn_intero.t_exports
-    OWNER to geonatuser;
---
--- TOC entry 365 (class 1259 OID 95805)
--- Name: v_export; Type: VIEW; Schema: gn_intero; Owner: geonatuser
---
+-- DROP TABLE gn_intero.t_exports_logs;
+CREATE TABLE gn_intero.t_exports_logs
+(
+    id TIMESTAMP NOT NULL,
+    format integer NOT NULL,
+    selection text COLLATE pg_catalog."default",
+    start date,
+    "end" date,
+    status numeric DEFAULT '-2'::integer,
+    log text COLLATE pg_catalog."default",
+    standard integer NOT NULL DEFAULT 0,
+    id_export integer,
+    CONSTRAINT t_exports_logs_pkey PRIMARY KEY (id),
+    CONSTRAINT fk_export_type_selection FOREIGN KEY (id_export)
+      REFERENCES gn_intero.t_exports (id) MATCH SIMPLE
+      ON UPDATE NO ACTION
+      ON DELETE NO ACTION
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
 
 CREATE OR REPLACE VIEW gn_intero.v_export WITH (security_barrier='false') AS
  SELECT export_occtax_sinp."nomCite",
@@ -97,7 +106,6 @@ CREATE OR REPLACE VIEW gn_intero.v_export WITH (security_barrier='false') AS
     export_occtax_sinp."cdNom",
     export_occtax_sinp."cdRef",
    FROM pr_occtax.export_occtax_sinp;
-
 
 CREATE OR REPLACE VIEW gn_intero.v_export_SINP WITH (security_barrier='false') AS
  SELECT export_occtax_sinp."permId",
@@ -200,7 +208,7 @@ CREATE OR REPLACE VIEW gn_intero.v_export_SINP_json WITH (security_barrier='fals
     export_occtax_sinp."orgGestDat",
     export_occtax_sinp."WKT",
     export_occtax_sinp."natObjGeo"
-   FROM pr_occtax.export_occtax_sinp)t;
+   FROM pr_occtax.export_occtax_sinp) t;
 
 CREATE OR REPLACE VIEW gn_intero.v_export_DwC WITH (security_barrier='false') AS
  SELECT export_occtax_sinp."permId" AS "OccurrenceID",
@@ -246,58 +254,3 @@ CREATE OR REPLACE VIEW gn_intero.v_export_DwC_json WITH (security_barrier='false
     export_occtax_sinp."orgGestDat" AS "InstitutionCode",
     export_occtax_sinp."WKT" AS "footprintWKT"
     FROM pr_occtax.export_occtax_sinp)t;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
---
--- TOC entry 4066 (class 0 OID 95785)
--- Dependencies: 363
--- Data for Name: bib_formats; Type: TABLE DATA; Schema: gn_intero; Owner: geonatuser
---
-
-COPY bib_formats (id_export_format, export_json, export_rdf, export_csv) FROM stdin;
-\.
-
-
---
--- TOC entry 4067 (class 0 OID 95790)
--- Dependencies: 364
--- Data for Name: cor_exports_roles; Type: TABLE DATA; Schema: gn_intero; Owner: geonatuser
---
-
-COPY cor_exports_roles (id_cor_exports_roles, roles) FROM stdin;
-\.
-
---
--- TOC entry 3898 (class 2606 OID 95789)
--- Name: bib_formats bib_formats_pkey; Type: CONSTRAINT; Schema: gn_intero; Owner: geonatuser
---
-
-ALTER TABLE ONLY bib_formats
-    ADD CONSTRAINT bib_formats_pkey PRIMARY KEY (id_export_format);
-
-
---
--- TOC entry 3900 (class 2606 OID 95794)
--- Name: cor_exports_roles cor_exports_roles_pkey; Type: CONSTRAINT; Schema: gn_intero; Owner: geonatuser
---
-
-ALTER TABLE ONLY cor_exports_roles
-    ADD CONSTRAINT cor_exports_roles_pkey PRIMARY KEY (id_cor_exports_roles);
