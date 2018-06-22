@@ -7,11 +7,11 @@ from geonature.utils.env import DB
 # from pypnusershub.db.tools import InsufficientRightsError
 # from pypnusershub import routes as fnauth
 
-from .models import (Export, ExportType,
-                     Format, format_map_ext,  # format_map_mime,
-                     Standard, standard_map_label)
-# FIXME: backend/frontend/jobs shared conf
+from .models import (Export,
+                     Format, format_map_ext, format_map_mime,
+                     Standard)  # , standard_map_label)
 EXPORTS_FOLDER = os.path.join(current_app.static_folder, 'exports')
+# FIXME: backend/frontend/jobs shared conf
 
 
 blueprint = Blueprint('export', __name__)
@@ -30,9 +30,7 @@ def add():
             export = Export(selection, standard, format)
             DB.session.add(export)
     DB.session.commit()
-
-    submissionID = export.ts()  # fallback export ref ?
-    return jsonify(id=submissionID, standard=standard, format=format)
+    return jsonify(id=export.id, standard=standard, format=format)
 
 
 # @blueprint.route('/progress/<submissionID>')
@@ -57,14 +55,16 @@ def add():
 @blueprint.route('/exports/<path:export>')
 # @fnauth.check_auth_cruved('R')
 def getExport(export):
-    # if not file.exists:
-        # trigger export
-    # super sloooow:
-    # if os.path.exists(fname(export)) and os.path.isfile(fname(export))]
+    filename, standard, id, extension = fname(export)
+    p = os.path.join(current_app.static_folder, 'exports', filename)
+    print('file ', p, 'exists ?', os.path.exists(p) and os.path.isfile(p))
+    mime = [format_map_mime[k]
+            for k, v in format_map_ext.items() if v == extension][0]
+    print('getExport() mime:', mime)
+    # FIXME: mimetype ?
     try:
         return send_from_directory(
-            EXPORTS_FOLDER, export,  # mimetype='',  # FIXME: mimetypes
-            as_attachment=True)
+            EXPORTS_FOLDER, filename, mimetype=mime, as_attachment=True)
     except Exception as e:
         return str(e)
 
@@ -80,8 +80,7 @@ def getExports():
 
 
 def fname(export):
-    return os.path.join(
-        current_app.static_folder, 'exports',
-        'export_{std}_{id}.{ext}'.format(
-            std=standard_map_label[export.standard],
-            id=export.ts(), ext=format_map_ext[export.format]))
+    rest, ext = export.rsplit('.', 1)
+    _, std, id = rest.split('_')
+    print('bp.fname():', export, std, id, ext)
+    return 'export_{std}_{id}.{ext}'.format(std=std, id=id, ext=ext), std, id, ext

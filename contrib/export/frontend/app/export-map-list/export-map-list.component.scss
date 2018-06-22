@@ -112,10 +112,22 @@ ngx-datatable {
 }
 
 #choice {
+  align-self: flex-end;
+  float:right;
+  display:inline;
+}
+
+#choiceAdmin {
+  align-self: flex-start;
+  float:left;
+  display:inline;
+}
+
+#globalChoice {
   margin-left:5px;
   margin-top: 10px;
   margin-bottom: 5px;
-  align-self: flex-end;
+
 }
 
 #checkLicence{
@@ -150,6 +162,14 @@ ngx-datatable {
   width: 150px;
   align-self: center;
   align-content: center;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+#AccueilButtonAdmin{
+  width: 150px;
+  align-self: left;
+  align-content: left;
   margin-top: 25px;
   margin-bottom: 25px;
 }
@@ -198,4 +218,36 @@ margin-left: 27%;
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: rgba(134, 133, 133, 0.575);
   opacity: 1; /* Firefox */
+}
+
+#adminModal {
+  width: 1000px;
+  position: absolute;
+  margin-left: -250px;
+}
+
+.alert-info {
+  background: #f9fafa;
+  color: #18294e;
+  border-color: #18294e;
+  text-align : center;
+}
+
+#chooseFormatAdminText {
+  margin-left: 400px;
+}
+
+#chooseFormatAdmin {
+  width: 270px;
+  margin-left: 350px;
+}
+
+#alertChooseFormatAdmin{
+  align-content: center;
+  align-self: center;
+  text-align : center;
+}
+
+#textAdmin{
+  margin-left: 20px;
 }

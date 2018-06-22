@@ -51,9 +51,10 @@ export class ExportMapListComponent {
 
       // Validation des champs du formulaire
       this.modalForm = this._fb.group({
-        adresseMail:['', Validators.compose([Validators.required, Validators.email])],
+        // adresseMail:['', Validators.compose([Validators.required, Validators.email])],
         chooseFormat:['', Validators.required],
-        chooseStandard:['', Validators.required]
+        chooseStandard:['', Validators.required],
+        chooseFormatAdmin:['',Validators.required]
       });
 
       this.exports$ = this.store.exports;
@@ -68,9 +69,13 @@ export class ExportMapListComponent {
       return this.modalForm.get('chooseStandard');
     }
 
-    get adresseMail() { 
-      return this.modalForm.get('adresseMail'); 
+    get chooseFormatAdmin() {
+      return this.modalForm.get('chooseFormatAdmin');
     }
+
+    // get adresseMail() { 
+    //   return this.modalForm.get('adresseMail'); 
+    // }
 
     // Utilisation du modal
     open(content) {

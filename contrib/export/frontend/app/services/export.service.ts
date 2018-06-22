@@ -10,10 +10,12 @@ import {
 import { Observable } from "rxjs/Observable";
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { share } from 'rxjs/operators/share';
+import { map } from "rxjs/operator/map";
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/takeWhile';
 
 import { AppConfig } from "@geonature_config/app.config";
+import { filter } from "rxjs/operator/filter";
 
 
 export interface Export {
@@ -41,7 +43,7 @@ export class ExportService {
   getExports() {
     this._api.get(`${apiEndpoint}/exports`).subscribe(
       (exports: Export[]) => {
-        // console.debug('export:', exports)
+        console.debug('exports:', exports)
         this.exports.next(exports);
       },
       error => console.error(error),
@@ -63,29 +65,48 @@ export class ExportService {
     this.labels.next(uniqueLabels)
   }
 
-  downloadExport(submissionID: number, ext='csv') {
-    const url = `${apiEndpoint}/exports/export_${submissionID}.${ext}`
+  getExport(label, standard, extension) {
+    console.debug(label, standard, extension)
+    let source = this.exports.map(
+      (exports: Export[]) => exports.filter(
+          (x: Export) => x.label == label && x.standard == standard && x.extension == extension)  // FIXME: csv
+      )
+
+    let subscription = source.subscribe(
+      x => {
+        // debugger;  // FIXME: csv
+        // console.log(x, x[0].id)
+        console.log(x)
+        this.downloadExport(parseFloat(x[0].id), x[0].standard, x[0].extension)
+      },
+      e => console.log(e.message),
+      () => console.log('completed')
+    )
+  }
+
+  downloadExport(submissionID: number, standard: string, ext: string) {
+    const url = `${apiEndpoint}/exports/export_${standard}_${submissionID}.${ext}`
     console.log(url)
     // window.open(url)
     this._api.get(url, {
-      headers: new HttpHeaders().set('Content-Type', `text/${ext}`),
+      headers: new HttpHeaders().set('Content-Type', `text/${ext}`),  // FIXME: Mime
       observe: 'events',
       responseType: 'blob',
       reportProgress: true,
     }).subscribe(
       event => {
         if (event.type === HttpEventType.DownloadProgress) {
-            let kbLoaded = Math.round(event.loaded / 1024);
-            // const percentage = 100 / event.total * event.loaded;
-
-            // this._dloadProgress = new BehaviorSubject(kbLoaded);
-            // this.downloadProgress = kbLoaded
-            // console.log(`Downloading ${kbLoaded}Kb.`);
+            if (event.hasOwnProperty('total')) {
+              const percentage = 100 / event.total * event.loaded;
+              console.log(`Downloaded ${percentage}%.`);
+            } else {
+              let kbLoaded = Math.round(event.loaded / 1024);
+              console.log(`Downloaded ${kbLoaded}Kb.`);
+            }
         }
         if (event.type === HttpEventType.Response) {
-          console.log(event.headers.get("Content-Type"))
-          // this.blob = new Blob([event.body], {type: event.headers.get("Content-Type")});
-          this._blob = new Blob([event.body], {type: `text/${ext}`});
+          console.log('API content-type', event.headers.get("Content-Type"))
+          this._blob = new Blob([event.body], {type: event.headers.get("Content-Type")});
         }
       },
       (err: HttpErrorResponse) => {
@@ -108,10 +129,11 @@ export class ExportService {
   }
 
 
+  /*
   getExportProgress(submissionID: number, ext='csv') {
     let progress = Observable.interval(1500)
       .switchMap(() => this._api.get(`${apiEndpoint}/progress/${submissionID}`))
-      .map(data => data.json())                   // TODO: export interface ExportProgress {}
+      .map(data => data.json())
       .takeWhile(data => data.status === '-2')
       .subscribe(
         data => {
@@ -125,4 +147,5 @@ export class ExportService {
           window.open(`${apiEndpoint}/exports/export_${submissionID}.${data.format}`);
         });
   }
+  */
 }
