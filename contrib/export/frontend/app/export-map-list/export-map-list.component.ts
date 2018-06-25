@@ -33,8 +33,10 @@ import { Export, ExportService } from "../services/export.service";
 export class ExportMapListComponent {
   exports$: Observable<Export[]>
   public modalForm : FormGroup;
+  public modalFormAdmin : FormGroup;
   public buttonDisabled: boolean = false;
   public barHide: boolean = false;
+  public barHideAdmin: boolean = false;
   public today = Date.now();
   public closeResult: string;
 
@@ -46,6 +48,7 @@ export class ExportMapListComponent {
     private _router: Router,
     public ngbModal: NgbModal,
     private _fb: FormBuilder,
+    private _fba: FormBuilder,
     private modalService: NgbModal,
     private _dynformService: DynamicFormService) {
 
@@ -53,7 +56,11 @@ export class ExportMapListComponent {
       this.modalForm = this._fb.group({
         // adresseMail:['', Validators.compose([Validators.required, Validators.email])],
         chooseFormat:['', Validators.required],
-        chooseStandard:['', Validators.required],
+        // chooseStandard:['', Validators.required],
+        
+      });
+
+      this.modalFormAdmin = this._fba.group({
         chooseFormatAdmin:['',Validators.required]
       });
 
@@ -65,18 +72,18 @@ export class ExportMapListComponent {
       return this.modalForm.get('chooseFormat');
     }
   
-    get chooseStandard() {
-      return this.modalForm.get('chooseStandard');
-    }
+    // get chooseStandard() {
+    //   return this.modalForm.get('chooseStandard');
+    // }
 
     get chooseFormatAdmin() {
-      return this.modalForm.get('chooseFormatAdmin');
+      return this.modalFormAdmin.get('chooseFormatAdmin');
     }
 
     // get adresseMail() { 
     //   return this.modalForm.get('adresseMail'); 
     // }
-
+k
     // Utilisation du modal
     open(content) {
       this.modalService.open(content).result.then((result) => {
@@ -109,9 +116,16 @@ export class ExportMapListComponent {
     this.store.downloadExport(parseFloat(submissionID))
   }
 
-  //Fonction pour avoir un modal vierge si l'on ferme puis réouvre le modal
-  resetModal() {
-    this.modalForm.reset();
+  showmeAdmin() {
+    this.barHideAdmin = !this.barHideAdmin;
+    const exportList = window.document.querySelectorAll('input[name="options"]:checked');
+    const submissionID = /export_(\d+\.\d+)\.csv/.exec(exportList[0].id)[1]
+    this.store.downloadExport(parseFloat(submissionID))
   }
+ 
+  //Fonction pour avoir un modal vierge si l'on ferme puis réouvre le modal
+  // resetModal() {
+  //   this.modalForm.reset();
+  // }
 
 }
